@@ -1,0 +1,101 @@
+export type Platform = "youtube" | "twitter" | "instagram";
+
+export type OEmbedResult = {
+  platform: Platform;
+  title: string;
+  embedHtml: string;
+  thumbnailUrl?: string;
+};
+
+/**
+ * Detects platform from URL string
+ */
+export function detectPlatform(url: string): Platform | null {
+  try {
+    const parsedUrl = new URL(url);
+    const hostname = parsedUrl.hostname.toLowerCase();
+
+    if (
+      hostname.includes("youtube.com") ||
+      hostname.includes("youtu.be")
+    ) {
+      return "youtube";
+    }
+
+    if (
+      hostname.includes("twitter.com") ||
+      hostname.includes("x.com")
+    ) {
+      return "twitter";
+    }
+
+    if (
+      hostname.includes("instagram.com") ||
+      hostname.includes("instagr.am")
+    ) {
+      return "instagram";
+    }
+
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Fetches oEmbed payload for supported platforms
+ */
+export async function fetchOEmbed(url: string): Promise<OEmbedResult> {
+  const platform = detectPlatform(url);
+
+  if (!platform) {
+    throw new Error("Unsupported or invalid URL. Please enter a valid YouTube or Twitter/X link.");
+  }
+
+  if (platform === "instagram") {
+    throw new Error("Instagram embeds require Meta access token configuration (Phase 5).");
+  }
+
+  if (platform === "youtube") {
+    const oembedUrl = `https://www.youtube.com/oembed?url=${encodeURIComponent(url)}&format=json`;
+    const res = await fetch(oembedUrl, { next: { revalidate: 3600 } });
+
+    if (!res.ok) {
+      throw new Error("Could not fetch YouTube video information. Please check the URL.");
+    }
+
+    const data = await res.json();
+    return {
+      platform: "youtube",
+      title: data.title || "YouTube Video",
+      embedHtml: data.html || "",
+      thumbnailUrl: data.thumbnail_url || null,
+    };
+  }
+
+  if (platform === "twitter") {
+    const oembedUrl = `https://publish.twitter.com/oembed?url=${encodeURIComponent(url)}&omit_script=1`;
+    const res = await fetch(oembedUrl, { next: { revalidate: 3600 } });
+
+    if (!res.ok) {
+      throw new Error("Could not fetch Twitter/X post information. Please check the URL.");
+    }
+
+    const data = await res.json();
+
+    // Clean title snippet from author or text
+    let title = "Twitter/X Post";
+    if (data.author_name) {
+      title = `Post by ${data.author_name}`;
+    }
+
+    return {
+      platform: "twitter",
+      title: title,
+      embedHtml: data.html || "",
+      thumbnailUrl: undefined,
+    };
+  }
+
+  throw new Error("Unsupported platform.");
+}
