@@ -2,14 +2,18 @@ import { auth, signOut } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 import { AddPostForm } from "@/components/AddPostForm";
 import { PostGrid } from "@/components/PostGrid";
 import { FolderList, FolderWithCount } from "@/components/FolderList";
+import { SearchFilter } from "@/components/SearchFilter";
 import type { Post } from "@prisma/client";
 
 interface DashboardPageProps {
   searchParams: Promise<{
     folderId?: string;
+    search?: string;
+    platform?: string;
   }>;
 }
 
@@ -20,7 +24,7 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
     redirect("/login");
   }
 
-  const { folderId } = await searchParams;
+  const { folderId, search, platform } = await searchParams;
 
   let posts: Post[] = [];
   let folders: FolderWithCount[] = [];
@@ -50,13 +54,24 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
       },
     });
 
-    // Determine query filter based on active folder tab
+    // Build combined Prisma filter query
     let whereClause: any = { userId: session.user.id };
 
     if (folderId === "uncategorized") {
       whereClause.folderId = null;
     } else if (folderId) {
       whereClause.folderId = folderId;
+    }
+
+    if (platform && (platform === "youtube" || platform === "twitter")) {
+      whereClause.platform = platform;
+    }
+
+    if (search && search.trim()) {
+      whereClause.title = {
+        contains: search.trim(),
+        mode: "insensitive",
+      };
     }
 
     posts = await prisma.post.findMany({
@@ -67,7 +82,7 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
     console.error("Error loading dashboard data:", err);
   }
 
-  // Get current active folder name for section heading
+  // Active folder section title
   const activeFolder = folders.find((f) => f.id === folderId);
   const activeTitle =
     folderId === "uncategorized"
@@ -79,10 +94,13 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col">
       {/* Top Navbar */}
-      <header className="border-b border-slate-800 bg-slate-900/50 backdrop-blur px-6 py-4 flex items-center justify-between sticky top-0 z-50">
-        <h1 className="text-xl font-bold tracking-tight text-white flex items-center gap-2">
-          <span>Second Brain</span>
-        </h1>
+      <header className="border-b border-slate-800 bg-slate-900/60 backdrop-blur-md px-6 py-4 flex items-center justify-between sticky top-0 z-50 shadow-sm">
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 rounded-xl bg-indigo-600 flex items-center justify-center font-extrabold text-white text-sm shadow-md">
+            SB
+          </div>
+          <h1 className="text-xl font-bold tracking-tight text-white">Second Brain</h1>
+        </div>
 
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-3">
@@ -133,18 +151,29 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
           />
         </aside>
 
-        {/* Right Main Area: Input Form & Post Grid */}
-        <section className="flex-1 space-y-8 min-w-0">
+        {/* Right Main Area */}
+        <section className="flex-1 space-y-6 min-w-0">
           <AddPostForm folders={folders} defaultFolderId={folderId} />
+
+          <SearchFilter />
 
           <div className="space-y-4">
             <div className="flex items-center justify-between border-b border-slate-800/80 pb-3">
-              <h2 className="text-lg font-bold text-white">
-                {activeTitle}{" "}
-                <span className="text-xs font-normal text-slate-400">
-                  ({posts.length})
+              <div className="flex items-center gap-2">
+                <h2 className="text-lg font-bold text-white">{activeTitle}</h2>
+                <span className="px-2 py-0.5 rounded-full text-xs font-semibold bg-slate-800 text-slate-300 border border-slate-700">
+                  {posts.length}
                 </span>
-              </h2>
+              </div>
+
+              {(search || platform) && (
+                <Link
+                  href={folderId ? `/dashboard?folderId=${folderId}` : "/dashboard"}
+                  className="text-xs text-indigo-400 hover:text-indigo-300 underline"
+                >
+                  Clear filters
+                </Link>
+              )}
             </div>
 
             <PostGrid posts={posts} folders={folders} />
