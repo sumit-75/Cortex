@@ -160,10 +160,13 @@ export function PostCard({ post, folders = [] }: PostCardProps) {
             <div
               className="w-full aspect-video rounded-xl overflow-hidden shadow-xs bg-black flex items-center justify-center"
               dangerouslySetInnerHTML={{
-                __html: post.embedHtml.replace(
-                  /<iframe /g,
-                  '<iframe class="w-full h-full border-0" '
-                ),
+                __html: post.embedHtml
+                  .replace(/width="\d+"/g, 'width="100%"')
+                  .replace(/height="\d+"/g, 'height="100%"')
+                  .replace(
+                    /<iframe /g,
+                    '<iframe class="w-full h-full border-0 rounded-xl" '
+                  ),
               }}
             />
           ) : (

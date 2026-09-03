@@ -54,11 +54,27 @@ export async function fetchOEmbed(url: string): Promise<OEmbedResult> {
     }
 
     const data = await res.json();
+
+    // High quality thumbnail URL (upgrade default hqdefault/mqdefault to maxresdefault)
+    let highQualityThumbnail = data.thumbnail_url || null;
+    if (highQualityThumbnail) {
+      highQualityThumbnail = highQualityThumbnail
+        .replace("hqdefault.jpg", "maxresdefault.jpg")
+        .replace("mqdefault.jpg", "maxresdefault.jpg")
+        .replace("sddefault.jpg", "maxresdefault.jpg");
+    }
+
+    // Clean YouTube embed HTML to remove fixed small width/height attributes
+    let cleanEmbedHtml = data.html || "";
+    cleanEmbedHtml = cleanEmbedHtml
+      .replace(/width="\d+"/g, 'width="100%"')
+      .replace(/height="\d+"/g, 'height="100%"');
+
     return {
       platform: "youtube",
       title: data.title || "YouTube Video",
-      embedHtml: data.html || "",
-      thumbnailUrl: data.thumbnail_url || null,
+      embedHtml: cleanEmbedHtml,
+      thumbnailUrl: highQualityThumbnail,
     };
   }
 
