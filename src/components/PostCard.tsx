@@ -90,12 +90,12 @@ export function PostCard({ post, folders = [] }: PostCardProps) {
     <TooltipProvider>
       <Card
         ref={containerRef}
-        className={`overflow-hidden flex flex-col justify-between border-slate-200/80 hover:shadow-lg hover:border-slate-300 transition-all duration-300 ${
+        className={`h-fit overflow-hidden flex flex-col justify-between border-slate-200/80 hover:shadow-lg hover:border-slate-300 transition-all duration-300 ${
           isPending ? "opacity-40 pointer-events-none" : ""
         }`}
       >
         {/* Top Card Header */}
-        <div className="p-4 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between gap-3">
+        <div className="p-3.5 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between gap-3">
           <div className="flex items-center gap-2 min-w-0">
             {renderPlatformBadge()}
             <h3 className="text-xs font-bold text-slate-800 truncate" title={post.title}>
@@ -155,7 +155,7 @@ export function PostCard({ post, folders = [] }: PostCardProps) {
         </div>
 
         {/* Embed Media Content */}
-        <div className="p-4 flex-1 flex items-center justify-center bg-slate-50/40">
+        <div className="p-3 bg-slate-50/40 flex items-center justify-center">
           {post.platform === "youtube" ? (
             <div
               className="w-full aspect-video rounded-xl overflow-hidden shadow-xs bg-black flex items-center justify-center"

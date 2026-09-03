@@ -7,7 +7,7 @@ import { AddPostForm } from "@/components/AddPostForm";
 import { PostGrid } from "@/components/PostGrid";
 import { FolderList, FolderWithCount } from "@/components/FolderList";
 import { SearchFilter } from "@/components/SearchFilter";
-import { Brain, LogOut, Layers, Filter } from "lucide-react";
+import { Brain, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import type { Post } from "@prisma/client";
@@ -97,7 +97,7 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans">
       {/* Top Navbar */}
-      <header className="border-b border-slate-200 bg-white/80 backdrop-blur-md px-6 py-3.5 flex items-center justify-between sticky top-0 z-50 shadow-xs">
+      <header className="border-b border-slate-200 bg-white/90 backdrop-blur-md px-6 py-3 flex items-center justify-between sticky top-0 z-50 shadow-2xs">
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center text-white shadow-md">
             <Brain className="w-5 h-5" />
@@ -117,10 +117,10 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
                 width={36}
                 height={36}
                 referrerPolicy="no-referrer"
-                className="rounded-full border border-slate-200 shadow-xs"
+                className="rounded-full border border-slate-200 shadow-2xs"
               />
             ) : (
-              <div className="w-9 h-9 rounded-full bg-indigo-600 flex items-center justify-center font-bold text-white shadow-xs">
+              <div className="w-9 h-9 rounded-full bg-indigo-600 flex items-center justify-center font-bold text-white shadow-2xs">
                 {session.user.name?.[0] || session.user.email?.[0] || "U"}
               </div>
             )}
@@ -144,10 +144,10 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
         </div>
       </header>
 
-      {/* Main Container Layout */}
-      <main className="max-w-7xl w-full mx-auto px-6 py-8 flex-1 flex flex-col md:flex-row gap-8">
-        {/* Left Sidebar: Folder Management */}
-        <aside className="w-full md:w-64 shrink-0 space-y-6">
+      {/* Main Full-Bleed App Layout (Left Sidebar Flush to Edge) */}
+      <main className="flex-1 flex flex-col md:flex-row min-h-[calc(100vh-61px)]">
+        {/* Left Sidebar: Folder Management (Flush to left edge) */}
+        <aside className="w-full md:w-64 shrink-0 border-r border-slate-200 bg-white p-5 space-y-6">
           <FolderList
             folders={folders}
             totalPostsCount={totalPostsCount}
@@ -155,8 +155,8 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
           />
         </aside>
 
-        {/* Right Main Area */}
-        <section className="flex-1 space-y-6 min-w-0">
+        {/* Right Main Content Area */}
+        <section className="flex-1 p-6 md:p-8 space-y-6 min-w-0 max-w-7xl">
           <AddPostForm folders={folders} defaultFolderId={folderId} />
 
           <SearchFilter />

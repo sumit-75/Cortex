@@ -85,7 +85,7 @@ export function FolderList({
 
   return (
     <TooltipProvider>
-      <div className="bg-white border border-slate-200 rounded-2xl p-4 space-y-4 shadow-sm">
+      <div className="space-y-4">
         {/* Sidebar Section Header */}
         <div className="flex items-center justify-between px-2">
           <div className="flex items-center gap-2">
