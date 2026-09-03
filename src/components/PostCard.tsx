@@ -52,20 +52,14 @@ export function PostCard({ post, folders = [] }: PostCardProps) {
     switch (post.platform) {
       case "youtube":
         return (
-          <span className="px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider bg-red-950/90 text-red-400 border border-red-800/40">
+          <span className="px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider bg-red-50 text-red-700 border border-red-200 shrink-0">
             YouTube
           </span>
         );
       case "twitter":
         return (
-          <span className="px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider bg-sky-950/90 text-sky-400 border border-sky-800/40">
+          <span className="px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider bg-sky-50 text-sky-700 border border-sky-200 shrink-0">
             Twitter / X
-          </span>
-        );
-      case "instagram":
-        return (
-          <span className="px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider bg-pink-950/90 text-pink-400 border border-pink-800/40">
-            Instagram
           </span>
         );
       default:
@@ -76,15 +70,15 @@ export function PostCard({ post, folders = [] }: PostCardProps) {
   return (
     <div
       ref={containerRef}
-      className={`bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden flex flex-col justify-between shadow-md transition-all hover:border-slate-700/80 ${
+      className={`bg-white border border-slate-200 rounded-2xl overflow-hidden flex flex-col justify-between shadow-sm transition-all hover:shadow-md hover:border-slate-300 ${
         isPending ? "opacity-40 pointer-events-none" : ""
       }`}
     >
       {/* Top Card Header */}
-      <div className="p-4 border-b border-slate-800/60 flex items-center justify-between gap-3">
+      <div className="p-4 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between gap-3">
         <div className="flex items-center gap-2 min-w-0">
           {renderPlatformBadge()}
-          <h3 className="text-xs font-semibold text-slate-200 truncate" title={post.title}>
+          <h3 className="text-xs font-semibold text-slate-800 truncate" title={post.title}>
             {post.title}
           </h3>
         </div>
@@ -95,7 +89,7 @@ export function PostCard({ post, folders = [] }: PostCardProps) {
             target="_blank"
             rel="noopener noreferrer"
             title="Open original post"
-            className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors"
+            className="p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-200/60 rounded-lg transition-colors"
           >
             <svg
               className="w-4 h-4"
@@ -119,7 +113,7 @@ export function PostCard({ post, folders = [] }: PostCardProps) {
               </button>
               <button
                 onClick={() => setShowConfirmDelete(false)}
-                className="px-2 py-1 text-[10px] font-medium text-slate-400 hover:text-white bg-slate-800 rounded-md"
+                className="px-2 py-1 text-[10px] font-medium text-slate-600 hover:text-slate-900 bg-slate-200 rounded-md"
               >
                 Cancel
               </button>
@@ -128,7 +122,7 @@ export function PostCard({ post, folders = [] }: PostCardProps) {
             <button
               onClick={() => setShowConfirmDelete(true)}
               title="Delete post"
-              className="p-1.5 text-slate-400 hover:text-rose-400 hover:bg-slate-800 rounded-lg transition-colors"
+              className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
             >
               <svg
                 className="w-4 h-4"
@@ -145,10 +139,10 @@ export function PostCard({ post, folders = [] }: PostCardProps) {
       </div>
 
       {/* Embed Media Content */}
-      <div className="p-4 flex-1 flex items-center justify-center bg-slate-950/40">
+      <div className="p-4 flex-1 flex items-center justify-center bg-slate-50/60">
         {post.platform === "youtube" ? (
           <div
-            className="w-full aspect-video rounded-xl overflow-hidden shadow-inner bg-black flex items-center justify-center"
+            className="w-full aspect-video rounded-xl overflow-hidden shadow-sm bg-black flex items-center justify-center"
             dangerouslySetInnerHTML={{
               __html: post.embedHtml.replace(
                 /<iframe /g,
@@ -158,19 +152,19 @@ export function PostCard({ post, folders = [] }: PostCardProps) {
           />
         ) : (
           <div
-            className="w-full overflow-x-auto flex justify-center text-slate-200 text-sm py-1 [&_blockquote]:max-w-full [&_iframe]:mx-auto"
+            className="w-full overflow-x-auto flex justify-center text-slate-900 text-sm py-1 [&_blockquote]:max-w-full [&_iframe]:mx-auto"
             dangerouslySetInnerHTML={{ __html: post.embedHtml }}
           />
         )}
       </div>
 
       {/* Card Footer Metadata & Folder Movement Dropdown */}
-      <div className="px-4 py-2.5 border-t border-slate-800/60 bg-slate-900/80 flex items-center justify-between gap-2 text-[11px] text-slate-400">
+      <div className="px-4 py-2.5 border-t border-slate-100 bg-slate-50/50 flex items-center justify-between gap-2 text-[11px] text-slate-500">
         <select
           value={post.folderId || "none"}
           onChange={handleFolderChange}
           disabled={isPending}
-          className="bg-slate-950 border border-slate-800 text-slate-300 text-[11px] rounded-md px-2 py-1 focus:outline-none focus:ring-1 focus:ring-indigo-500 cursor-pointer max-w-[150px] truncate"
+          className="bg-white border border-slate-200 text-slate-700 text-[11px] rounded-md px-2 py-1 focus:outline-none focus:ring-1 focus:ring-indigo-500 cursor-pointer max-w-[150px] truncate shadow-2xs"
         >
           <option value="none">📁 Uncategorized</option>
           {folders.map((f) => (

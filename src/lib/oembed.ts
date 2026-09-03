@@ -1,4 +1,4 @@
-export type Platform = "youtube" | "twitter" | "instagram";
+export type Platform = "youtube" | "twitter";
 
 export type OEmbedResult = {
   platform: Platform;
@@ -29,13 +29,6 @@ export function detectPlatform(url: string): Platform | null {
       return "twitter";
     }
 
-    if (
-      hostname.includes("instagram.com") ||
-      hostname.includes("instagr.am")
-    ) {
-      return "instagram";
-    }
-
     return null;
   } catch {
     return null;
@@ -43,17 +36,13 @@ export function detectPlatform(url: string): Platform | null {
 }
 
 /**
- * Fetches oEmbed payload for supported platforms
+ * Fetches oEmbed payload for supported platforms (YouTube & Twitter/X)
  */
 export async function fetchOEmbed(url: string): Promise<OEmbedResult> {
   const platform = detectPlatform(url);
 
   if (!platform) {
     throw new Error("Unsupported or invalid URL. Please enter a valid YouTube or Twitter/X link.");
-  }
-
-  if (platform === "instagram") {
-    throw new Error("Instagram embeds require Meta access token configuration (Phase 5).");
   }
 
   if (platform === "youtube") {
@@ -83,7 +72,6 @@ export async function fetchOEmbed(url: string): Promise<OEmbedResult> {
 
     const data = await res.json();
 
-    // Clean title snippet from author or text
     let title = "Twitter/X Post";
     if (data.author_name) {
       title = `Post by ${data.author_name}`;

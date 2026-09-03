@@ -92,14 +92,14 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
       : "All Saved Posts";
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col">
+    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col">
       {/* Top Navbar */}
-      <header className="border-b border-slate-800 bg-slate-900/60 backdrop-blur-md px-6 py-4 flex items-center justify-between sticky top-0 z-50 shadow-sm">
+      <header className="border-b border-slate-200 bg-white/80 backdrop-blur-md px-6 py-4 flex items-center justify-between sticky top-0 z-50 shadow-xs">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-xl bg-indigo-600 flex items-center justify-center font-extrabold text-white text-sm shadow-md">
             SB
           </div>
-          <h1 className="text-xl font-bold tracking-tight text-white">Second Brain</h1>
+          <h1 className="text-xl font-bold tracking-tight text-slate-900">Second Brain</h1>
         </div>
 
         <div className="flex items-center gap-4">
@@ -111,16 +111,16 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
                 width={36}
                 height={36}
                 referrerPolicy="no-referrer"
-                className="rounded-full border border-slate-700"
+                className="rounded-full border border-slate-200 shadow-xs"
               />
             ) : (
-              <div className="w-9 h-9 rounded-full bg-indigo-600 flex items-center justify-center font-bold text-white">
+              <div className="w-9 h-9 rounded-full bg-indigo-600 flex items-center justify-center font-bold text-white shadow-xs">
                 {session.user.name?.[0] || session.user.email?.[0] || "U"}
               </div>
             )}
             <div className="hidden sm:block text-left">
-              <p className="text-sm font-medium text-white">{session.user.name}</p>
-              <p className="text-xs text-slate-400">{session.user.email}</p>
+              <p className="text-sm font-medium text-slate-900">{session.user.name}</p>
+              <p className="text-xs text-slate-500">{session.user.email}</p>
             </div>
           </div>
 
@@ -132,7 +132,7 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
           >
             <button
               type="submit"
-              className="px-3 py-1.5 text-xs font-medium text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg transition-colors cursor-pointer"
+              className="px-3 py-1.5 text-xs font-medium text-slate-700 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 border border-slate-300 rounded-lg transition-colors cursor-pointer"
             >
               Sign out
             </button>
@@ -158,10 +158,10 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
           <SearchFilter />
 
           <div className="space-y-4">
-            <div className="flex items-center justify-between border-b border-slate-800/80 pb-3">
+            <div className="flex items-center justify-between border-b border-slate-200 pb-3">
               <div className="flex items-center gap-2">
-                <h2 className="text-lg font-bold text-white">{activeTitle}</h2>
-                <span className="px-2 py-0.5 rounded-full text-xs font-semibold bg-slate-800 text-slate-300 border border-slate-700">
+                <h2 className="text-lg font-bold text-slate-900">{activeTitle}</h2>
+                <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 border border-slate-200">
                   {posts.length}
                 </span>
               </div>
@@ -169,7 +169,7 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
               {(search || platform) && (
                 <Link
                   href={folderId ? `/dashboard?folderId=${folderId}` : "/dashboard"}
-                  className="text-xs text-indigo-400 hover:text-indigo-300 underline"
+                  className="text-xs text-indigo-600 hover:text-indigo-700 font-medium underline"
                 >
                   Clear filters
                 </Link>

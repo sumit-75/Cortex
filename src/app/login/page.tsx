@@ -8,12 +8,15 @@ export default async function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-950 px-4">
-      <div className="max-w-md w-full space-y-8 p-8 bg-slate-900 border border-slate-800 rounded-2xl shadow-xl text-center">
+    <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4">
+      <div className="max-w-md w-full space-y-8 p-8 bg-white border border-slate-200 rounded-2xl shadow-xl text-center">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-white">Second Brain</h1>
-          <p className="mt-2 text-sm text-slate-400">
-            Save and organize your favorite posts from YouTube, X/Twitter, and Instagram.
+          <div className="w-12 h-12 rounded-2xl bg-indigo-600 flex items-center justify-center font-black text-white text-xl mx-auto mb-4 shadow-md">
+            SB
+          </div>
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900">Welcome to Second Brain</h1>
+          <p className="mt-2 text-sm text-slate-600">
+            Save and organize your favorite posts from YouTube and Twitter/X in one clean dashboard.
           </p>
         </div>
 
@@ -25,7 +28,7 @@ export default async function LoginPage() {
         >
           <button
             type="submit"
-            className="w-full flex items-center justify-center gap-3 px-5 py-3 border border-slate-700 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-medium transition-colors shadow-sm cursor-pointer"
+            className="w-full flex items-center justify-center gap-3 px-5 py-3 border border-slate-300 rounded-xl bg-white hover:bg-slate-50 text-slate-800 font-medium transition-all shadow-sm cursor-pointer hover:border-slate-400"
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24">
               <path

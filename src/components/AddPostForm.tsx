@@ -51,29 +51,23 @@ export function AddPostForm({ folders = [], defaultFolderId }: AddPostFormProps)
     switch (platform) {
       case "youtube":
         return (
-          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-red-950/80 text-red-400 border border-red-800/50">
+          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-red-50 text-red-700 border border-red-200">
             YouTube
           </span>
         );
       case "twitter":
         return (
-          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-sky-950/80 text-sky-400 border border-sky-800/50">
+          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-sky-50 text-sky-700 border border-sky-200">
             Twitter / X
-          </span>
-        );
-      case "instagram":
-        return (
-          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-pink-950/80 text-pink-400 border border-pink-800/50">
-            Instagram (Phase 5)
           </span>
         );
     }
   };
 
   return (
-    <div className="w-full bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-lg">
+    <div className="w-full bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
       <div className="flex items-center justify-between mb-3">
-        <label htmlFor="url-input" className="text-sm font-semibold text-slate-200">
+        <label htmlFor="url-input" className="text-sm font-semibold text-slate-800">
           Save a new link
         </label>
         {getPlatformBadge(detectedPlatform)}
@@ -92,7 +86,7 @@ export function AddPostForm({ folders = [], defaultFolderId }: AddPostFormProps)
             }}
             placeholder="Paste YouTube or Twitter/X post link..."
             disabled={isPending}
-            className="w-full px-4 py-3 bg-slate-950 border border-slate-700/80 rounded-xl text-white placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all disabled:opacity-50"
+            className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white transition-all disabled:opacity-50"
           />
         </div>
 
@@ -101,7 +95,7 @@ export function AddPostForm({ folders = [], defaultFolderId }: AddPostFormProps)
             value={selectedFolderId}
             onChange={(e) => setSelectedFolderId(e.target.value)}
             disabled={isPending}
-            className="px-3 py-3 bg-slate-950 border border-slate-700/80 rounded-xl text-white text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500 shrink-0 cursor-pointer"
+            className="px-3 py-3 bg-slate-50 border border-slate-300 rounded-xl text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500 shrink-0 cursor-pointer"
           >
             <option value="none">No Folder (Uncategorized)</option>
             {folders.map((f) => (
@@ -115,7 +109,7 @@ export function AddPostForm({ folders = [], defaultFolderId }: AddPostFormProps)
         <button
           type="submit"
           disabled={isPending || !url.trim()}
-          className="px-6 py-3 bg-indigo-600 hover:bg-indigo-500 disabled:bg-slate-800 disabled:text-slate-500 text-white font-medium text-sm rounded-xl transition-colors flex items-center justify-center gap-2 cursor-pointer disabled:cursor-not-allowed shrink-0"
+          className="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-200 disabled:text-slate-400 text-white font-medium text-sm rounded-xl transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer disabled:cursor-not-allowed shrink-0"
         >
           {isPending ? (
             <>
@@ -148,13 +142,13 @@ export function AddPostForm({ folders = [], defaultFolderId }: AddPostFormProps)
       </form>
 
       {error && (
-        <div className="mt-3 p-3 bg-rose-950/60 border border-rose-800/50 rounded-xl text-xs text-rose-300">
+        <div className="mt-3 p-3 bg-rose-50 border border-rose-200 rounded-xl text-xs text-rose-700">
           {error}
         </div>
       )}
 
       {success && (
-        <div className="mt-3 p-3 bg-emerald-950/60 border border-emerald-800/50 rounded-xl text-xs text-emerald-300">
+        <div className="mt-3 p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-xs text-emerald-700">
           {success}
         </div>
       )}
