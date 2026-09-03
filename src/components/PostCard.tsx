@@ -10,6 +10,13 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
@@ -51,8 +58,7 @@ export function PostCard({ post, folders = [] }: PostCardProps) {
     });
   };
 
-  const handleFolderChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = e.target.value;
+  const handleFolderChange = (value: string) => {
     const targetFolderId = value === "none" ? null : value;
     startTransition(async () => {
       await movePostToFolder(post.id, targetFolderId);
@@ -84,7 +90,7 @@ export function PostCard({ post, folders = [] }: PostCardProps) {
     <TooltipProvider>
       <Card
         ref={containerRef}
-        className={`overflow-hidden flex flex-col justify-between hover:shadow-md hover:border-slate-300 transition-all ${
+        className={`overflow-hidden flex flex-col justify-between border-slate-200/80 hover:shadow-lg hover:border-slate-300 transition-all duration-300 ${
           isPending ? "opacity-40 pointer-events-none" : ""
         }`}
       >
@@ -92,7 +98,7 @@ export function PostCard({ post, folders = [] }: PostCardProps) {
         <div className="p-4 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between gap-3">
           <div className="flex items-center gap-2 min-w-0">
             {renderPlatformBadge()}
-            <h3 className="text-xs font-semibold text-slate-800 truncate" title={post.title}>
+            <h3 className="text-xs font-bold text-slate-800 truncate" title={post.title}>
               {post.title}
             </h3>
           </div>
@@ -149,7 +155,7 @@ export function PostCard({ post, folders = [] }: PostCardProps) {
         </div>
 
         {/* Embed Media Content */}
-        <div className="p-4 flex-1 flex items-center justify-center bg-slate-50/60">
+        <div className="p-4 flex-1 flex items-center justify-center bg-slate-50/40">
           {post.platform === "youtube" ? (
             <div
               className="w-full aspect-video rounded-xl overflow-hidden shadow-xs bg-black flex items-center justify-center"
@@ -168,23 +174,29 @@ export function PostCard({ post, folders = [] }: PostCardProps) {
           )}
         </div>
 
-        {/* Card Footer Metadata & Folder Movement Dropdown */}
+        {/* Card Footer Metadata & Shadcn Custom Folder Selector */}
         <div className="px-4 py-2.5 border-t border-slate-100 bg-slate-50/50 flex items-center justify-between gap-2 text-[11px] text-slate-500">
-          <select
-            value={post.folderId || "none"}
-            onChange={handleFolderChange}
-            disabled={isPending}
-            className="bg-white border border-slate-200 text-slate-700 text-[11px] rounded-lg px-2 py-1 focus:outline-none focus:ring-1 focus:ring-indigo-500 cursor-pointer max-w-[150px] truncate shadow-2xs font-medium"
-          >
-            <option value="none">📁 Uncategorized</option>
-            {folders.map((f) => (
-              <option key={f.id} value={f.id}>
-                📁 {f.name}
-              </option>
-            ))}
-          </select>
+          <div className="w-40 shrink-0">
+            <Select
+              value={post.folderId || "none"}
+              onValueChange={handleFolderChange}
+              disabled={isPending}
+            >
+              <SelectTrigger className="h-7 text-[11px] px-2 py-0 border-slate-200">
+                <SelectValue placeholder="Select folder..." />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="none">📁 Uncategorized</SelectItem>
+                {folders.map((f) => (
+                  <SelectItem key={f.id} value={f.id}>
+                    📁 {f.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
 
-          <span className="shrink-0">{new Date(post.createdAt).toLocaleDateString()}</span>
+          <span className="shrink-0 font-medium">{new Date(post.createdAt).toLocaleDateString()}</span>
         </div>
       </Card>
     </TooltipProvider>

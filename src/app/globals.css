@@ -4,15 +4,16 @@
 :root {
   --background: #f8fafc;
   --foreground: #0f172a;
-  --font-absans: 'Absans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-jakarta: 'Plus Jakarta Sans', 'Absans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 body {
   background-color: var(--background);
   color: var(--foreground);
-  font-family: var(--font-absans);
+  font-family: var(--font-jakarta), system-ui, -apple-system, sans-serif;
+  letter-spacing: -0.01em;
 }
 
 * {
-  font-family: var(--font-absans);
+  font-family: var(--font-jakarta), system-ui, -apple-system, sans-serif;
 }

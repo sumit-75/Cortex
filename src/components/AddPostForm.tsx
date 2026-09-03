@@ -11,6 +11,13 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
   TooltipProvider,
 } from "@/components/ui/tooltip";
 
@@ -77,10 +84,10 @@ export function AddPostForm({ folders = [], defaultFolderId }: AddPostFormProps)
 
   return (
     <TooltipProvider>
-      <Card className="shadow-sm">
+      <Card className="shadow-sm border-slate-200/80 hover:border-slate-300 transition-all">
         <CardContent className="p-6">
           <div className="flex items-center justify-between mb-3">
-            <label htmlFor="url-input" className="text-sm font-semibold text-slate-800 flex items-center gap-2">
+            <label htmlFor="url-input" className="text-sm font-bold text-slate-900 flex items-center gap-2 tracking-tight">
               <Link2 className="w-4 h-4 text-indigo-600" />
               Save a new link
             </label>
@@ -100,30 +107,36 @@ export function AddPostForm({ folders = [], defaultFolderId }: AddPostFormProps)
                 }}
                 placeholder="Paste YouTube or Twitter/X post link..."
                 disabled={isPending}
-                className="h-11 pl-4"
+                className="h-11 pl-4 text-xs font-medium"
               />
             </div>
 
             {folders.length > 0 && (
-              <select
-                value={selectedFolderId}
-                onChange={(e) => setSelectedFolderId(e.target.value)}
-                disabled={isPending}
-                className="px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500 shrink-0 cursor-pointer h-11"
-              >
-                <option value="none">No Folder (Uncategorized)</option>
-                {folders.map((f) => (
-                  <option key={f.id} value={f.id}>
-                    📁 {f.name}
-                  </option>
-                ))}
-              </select>
+              <div className="w-full sm:w-56 shrink-0">
+                <Select
+                  value={selectedFolderId}
+                  onValueChange={setSelectedFolderId}
+                  disabled={isPending}
+                >
+                  <SelectTrigger className="h-11">
+                    <SelectValue placeholder="Select folder..." />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="none">📁 No Folder (Uncategorized)</SelectItem>
+                    {folders.map((f) => (
+                      <SelectItem key={f.id} value={f.id}>
+                        📁 {f.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             )}
 
             <Button
               type="submit"
               disabled={isPending || !url.trim()}
-              className="h-11 px-6 text-xs font-semibold gap-2 shrink-0"
+              className="h-11 px-6 text-xs font-bold gap-2 shrink-0 shadow-sm hover:shadow-md"
             >
               {isPending ? (
                 <>
@@ -140,13 +153,13 @@ export function AddPostForm({ folders = [], defaultFolderId }: AddPostFormProps)
           </form>
 
           {error && (
-            <div className="mt-3 p-3 bg-rose-50 border border-rose-200 rounded-xl text-xs text-rose-700 animate-in fade-in-50">
+            <div className="mt-3 p-3 bg-rose-50 border border-rose-200 rounded-xl text-xs font-semibold text-rose-700 animate-in fade-in-50">
               {error}
             </div>
           )}
 
           {success && (
-            <div className="mt-3 p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-xs text-emerald-700 animate-in fade-in-50">
+            <div className="mt-3 p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-xs font-semibold text-emerald-700 animate-in fade-in-50">
               {success}
             </div>
           )}
