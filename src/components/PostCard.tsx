@@ -4,6 +4,17 @@ import { useEffect, useRef, useState, useTransition } from "react";
 import type { Post } from "@prisma/client";
 import { deletePost, movePostToFolder } from "@/app/actions/post";
 import type { FolderWithCount } from "@/components/FolderList";
+import { YoutubeIcon, TwitterIcon } from "@/components/icons";
+import { ExternalLink, Trash2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 declare global {
   interface Window {
@@ -52,15 +63,17 @@ export function PostCard({ post, folders = [] }: PostCardProps) {
     switch (post.platform) {
       case "youtube":
         return (
-          <span className="px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider bg-red-50 text-red-700 border border-red-200 shrink-0">
+          <Badge variant="youtube" className="gap-1 shrink-0">
+            <YoutubeIcon className="w-3.5 h-3.5 text-red-600" />
             YouTube
-          </span>
+          </Badge>
         );
       case "twitter":
         return (
-          <span className="px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider bg-sky-50 text-sky-700 border border-sky-200 shrink-0">
+          <Badge variant="twitter" className="gap-1 shrink-0">
+            <TwitterIcon className="w-3 h-3 text-sky-500" />
             Twitter / X
-          </span>
+          </Badge>
         );
       default:
         return null;
@@ -68,114 +81,112 @@ export function PostCard({ post, folders = [] }: PostCardProps) {
   };
 
   return (
-    <div
-      ref={containerRef}
-      className={`bg-white border border-slate-200 rounded-2xl overflow-hidden flex flex-col justify-between shadow-sm transition-all hover:shadow-md hover:border-slate-300 ${
-        isPending ? "opacity-40 pointer-events-none" : ""
-      }`}
-    >
-      {/* Top Card Header */}
-      <div className="p-4 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between gap-3">
-        <div className="flex items-center gap-2 min-w-0">
-          {renderPlatformBadge()}
-          <h3 className="text-xs font-semibold text-slate-800 truncate" title={post.title}>
-            {post.title}
-          </h3>
+    <TooltipProvider>
+      <Card
+        ref={containerRef}
+        className={`overflow-hidden flex flex-col justify-between hover:shadow-md hover:border-slate-300 transition-all ${
+          isPending ? "opacity-40 pointer-events-none" : ""
+        }`}
+      >
+        {/* Top Card Header */}
+        <div className="p-4 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2 min-w-0">
+            {renderPlatformBadge()}
+            <h3 className="text-xs font-semibold text-slate-800 truncate" title={post.title}>
+              {post.title}
+            </h3>
+          </div>
+
+          <div className="flex items-center gap-1 shrink-0">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <a
+                  href={post.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-200/60 rounded-lg transition-colors inline-flex items-center"
+                >
+                  <ExternalLink className="w-4 h-4" />
+                </a>
+              </TooltipTrigger>
+              <TooltipContent>Open original link</TooltipContent>
+            </Tooltip>
+
+            {showConfirmDelete ? (
+              <div className="flex items-center gap-1">
+                <Button
+                  size="sm"
+                  variant="destructive"
+                  onClick={handleDelete}
+                  disabled={isPending}
+                  className="h-7 px-2 text-[10px]"
+                >
+                  {isPending ? "..." : "Confirm"}
+                </Button>
+                <Button
+                  size="sm"
+                  variant="secondary"
+                  onClick={() => setShowConfirmDelete(false)}
+                  className="h-7 px-2 text-[10px]"
+                >
+                  Cancel
+                </Button>
+              </div>
+            ) : (
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button
+                    onClick={() => setShowConfirmDelete(true)}
+                    className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent>Delete post</TooltipContent>
+              </Tooltip>
+            )}
+          </div>
         </div>
 
-        <div className="flex items-center gap-1 shrink-0">
-          <a
-            href={post.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            title="Open original post"
-            className="p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-200/60 rounded-lg transition-colors"
-          >
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              viewBox="0 0 24 24"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-            </svg>
-          </a>
-
-          {showConfirmDelete ? (
-            <div className="flex items-center gap-1">
-              <button
-                onClick={handleDelete}
-                disabled={isPending}
-                className="px-2 py-1 text-[10px] font-bold text-white bg-rose-600 hover:bg-rose-500 rounded-md transition-colors"
-              >
-                {isPending ? "..." : "Confirm"}
-              </button>
-              <button
-                onClick={() => setShowConfirmDelete(false)}
-                className="px-2 py-1 text-[10px] font-medium text-slate-600 hover:text-slate-900 bg-slate-200 rounded-md"
-              >
-                Cancel
-              </button>
-            </div>
+        {/* Embed Media Content */}
+        <div className="p-4 flex-1 flex items-center justify-center bg-slate-50/60">
+          {post.platform === "youtube" ? (
+            <div
+              className="w-full aspect-video rounded-xl overflow-hidden shadow-xs bg-black flex items-center justify-center"
+              dangerouslySetInnerHTML={{
+                __html: post.embedHtml.replace(
+                  /<iframe /g,
+                  '<iframe class="w-full h-full border-0" '
+                ),
+              }}
+            />
           ) : (
-            <button
-              onClick={() => setShowConfirmDelete(true)}
-              title="Delete post"
-              className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
-            >
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                viewBox="0 0 24 24"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-              </svg>
-            </button>
+            <div
+              className="w-full overflow-x-auto flex justify-center text-slate-900 text-sm py-1 [&_blockquote]:max-w-full [&_iframe]:mx-auto"
+              dangerouslySetInnerHTML={{ __html: post.embedHtml }}
+            />
           )}
         </div>
-      </div>
 
-      {/* Embed Media Content */}
-      <div className="p-4 flex-1 flex items-center justify-center bg-slate-50/60">
-        {post.platform === "youtube" ? (
-          <div
-            className="w-full aspect-video rounded-xl overflow-hidden shadow-sm bg-black flex items-center justify-center"
-            dangerouslySetInnerHTML={{
-              __html: post.embedHtml.replace(
-                /<iframe /g,
-                '<iframe class="w-full h-full border-0" '
-              ),
-            }}
-          />
-        ) : (
-          <div
-            className="w-full overflow-x-auto flex justify-center text-slate-900 text-sm py-1 [&_blockquote]:max-w-full [&_iframe]:mx-auto"
-            dangerouslySetInnerHTML={{ __html: post.embedHtml }}
-          />
-        )}
-      </div>
+        {/* Card Footer Metadata & Folder Movement Dropdown */}
+        <div className="px-4 py-2.5 border-t border-slate-100 bg-slate-50/50 flex items-center justify-between gap-2 text-[11px] text-slate-500">
+          <select
+            value={post.folderId || "none"}
+            onChange={handleFolderChange}
+            disabled={isPending}
+            className="bg-white border border-slate-200 text-slate-700 text-[11px] rounded-lg px-2 py-1 focus:outline-none focus:ring-1 focus:ring-indigo-500 cursor-pointer max-w-[150px] truncate shadow-2xs font-medium"
+          >
+            <option value="none">📁 Uncategorized</option>
+            {folders.map((f) => (
+              <option key={f.id} value={f.id}>
+                📁 {f.name}
+              </option>
+            ))}
+          </select>
 
-      {/* Card Footer Metadata & Folder Movement Dropdown */}
-      <div className="px-4 py-2.5 border-t border-slate-100 bg-slate-50/50 flex items-center justify-between gap-2 text-[11px] text-slate-500">
-        <select
-          value={post.folderId || "none"}
-          onChange={handleFolderChange}
-          disabled={isPending}
-          className="bg-white border border-slate-200 text-slate-700 text-[11px] rounded-md px-2 py-1 focus:outline-none focus:ring-1 focus:ring-indigo-500 cursor-pointer max-w-[150px] truncate shadow-2xs"
-        >
-          <option value="none">📁 Uncategorized</option>
-          {folders.map((f) => (
-            <option key={f.id} value={f.id}>
-              📁 {f.name}
-            </option>
-          ))}
-        </select>
-
-        <span className="shrink-0">{new Date(post.createdAt).toLocaleDateString()}</span>
-      </div>
-    </div>
+          <span className="shrink-0">{new Date(post.createdAt).toLocaleDateString()}</span>
+        </div>
+      </Card>
+    </TooltipProvider>
   );
 }

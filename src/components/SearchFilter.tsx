@@ -2,6 +2,11 @@
 
 import { useState, useTransition, useEffect } from "react";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
+import { Search, X } from "lucide-react";
+import { YoutubeIcon, TwitterIcon } from "@/components/icons";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 
 export function SearchFilter() {
   const router = useRouter();
@@ -54,72 +59,68 @@ export function SearchFilter() {
   };
 
   return (
-    <div className="bg-white border border-slate-200 rounded-2xl p-4 space-y-4 shadow-sm">
-      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
-        {/* Search Bar */}
-        <div className="relative flex-1">
-          <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
+    <Card className="shadow-sm">
+      <CardContent className="p-4">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
+          {/* Search Bar */}
+          <div className="relative flex-1">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+              <Search className="w-4 h-4" />
+            </div>
+
+            <Input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => handleSearchChange(e.target.value)}
+              placeholder="Search saved posts by title..."
+              className="pl-9 pr-9"
+            />
+
+            {searchTerm && (
+              <button
+                onClick={handleClearSearch}
+                className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-700 cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            )}
           </div>
 
-          <input
-            type="text"
-            value={searchTerm}
-            onChange={(e) => handleSearchChange(e.target.value)}
-            placeholder="Search saved posts by title..."
-            className="w-full pl-10 pr-9 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all"
-          />
-
-          {searchTerm && (
-            <button
-              onClick={handleClearSearch}
-              className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-700"
+          {/* Platform Filter Pills */}
+          <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200 shrink-0">
+            <Button
+              variant={!currentPlatform || currentPlatform === "all" ? "default" : "ghost"}
+              size="sm"
+              onClick={() => handlePlatformChange("all")}
+              className="h-8 text-xs px-3 font-semibold"
             >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          )}
+              All
+            </Button>
+            <Button
+              variant={currentPlatform === "youtube" ? "default" : "ghost"}
+              size="sm"
+              onClick={() => handlePlatformChange("youtube")}
+              className={`h-8 text-xs px-3 font-semibold gap-1.5 ${
+                currentPlatform === "youtube" ? "bg-red-600 hover:bg-red-700 text-white" : ""
+              }`}
+            >
+              <YoutubeIcon className="w-3.5 h-3.5" />
+              YouTube
+            </Button>
+            <Button
+              variant={currentPlatform === "twitter" ? "default" : "ghost"}
+              size="sm"
+              onClick={() => handlePlatformChange("twitter")}
+              className={`h-8 text-xs px-3 font-semibold gap-1.5 ${
+                currentPlatform === "twitter" ? "bg-sky-500 hover:bg-sky-600 text-white" : ""
+              }`}
+            >
+              <TwitterIcon className="w-3 h-3" />
+              Twitter / X
+            </Button>
+          </div>
         </div>
-
-        {/* Platform Filter Pills */}
-        <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200 shrink-0">
-          <button
-            onClick={() => handlePlatformChange("all")}
-            className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors cursor-pointer ${
-              !currentPlatform || currentPlatform === "all"
-                ? "bg-indigo-600 text-white shadow-sm"
-                : "text-slate-600 hover:text-slate-900 hover:bg-slate-200/70"
-            }`}
-          >
-            All
-          </button>
-          <button
-            onClick={() => handlePlatformChange("youtube")}
-            className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors cursor-pointer flex items-center gap-1.5 ${
-              currentPlatform === "youtube"
-                ? "bg-red-600 text-white shadow-sm"
-                : "text-slate-600 hover:text-slate-900 hover:bg-slate-200/70"
-            }`}
-          >
-            <span className="w-2 h-2 rounded-full bg-red-500"></span>
-            YouTube
-          </button>
-          <button
-            onClick={() => handlePlatformChange("twitter")}
-            className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors cursor-pointer flex items-center gap-1.5 ${
-              currentPlatform === "twitter"
-                ? "bg-sky-500 text-white shadow-sm"
-                : "text-slate-600 hover:text-slate-900 hover:bg-slate-200/70"
-            }`}
-          >
-            <span className="w-2 h-2 rounded-full bg-sky-400"></span>
-            Twitter / X
-          </button>
-        </div>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 }

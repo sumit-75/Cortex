@@ -7,6 +7,9 @@ import { AddPostForm } from "@/components/AddPostForm";
 import { PostGrid } from "@/components/PostGrid";
 import { FolderList, FolderWithCount } from "@/components/FolderList";
 import { SearchFilter } from "@/components/SearchFilter";
+import { Brain, LogOut, Layers, Filter } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import type { Post } from "@prisma/client";
 
 interface DashboardPageProps {
@@ -92,14 +95,17 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
       : "All Saved Posts";
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col">
+    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans">
       {/* Top Navbar */}
-      <header className="border-b border-slate-200 bg-white/80 backdrop-blur-md px-6 py-4 flex items-center justify-between sticky top-0 z-50 shadow-xs">
+      <header className="border-b border-slate-200 bg-white/80 backdrop-blur-md px-6 py-3.5 flex items-center justify-between sticky top-0 z-50 shadow-xs">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-xl bg-indigo-600 flex items-center justify-center font-extrabold text-white text-sm shadow-md">
-            SB
+          <div className="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center text-white shadow-md">
+            <Brain className="w-5 h-5" />
           </div>
-          <h1 className="text-xl font-bold tracking-tight text-slate-900">Second Brain</h1>
+          <div>
+            <h1 className="text-base font-bold tracking-tight text-slate-900 leading-tight">Second Brain</h1>
+            <p className="text-[10px] text-slate-500 font-medium">Personal Link & Media Library</p>
+          </div>
         </div>
 
         <div className="flex items-center gap-4">
@@ -119,8 +125,8 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
               </div>
             )}
             <div className="hidden sm:block text-left">
-              <p className="text-sm font-medium text-slate-900">{session.user.name}</p>
-              <p className="text-xs text-slate-500">{session.user.email}</p>
+              <p className="text-xs font-semibold text-slate-900">{session.user.name}</p>
+              <p className="text-[10px] text-slate-500">{session.user.email}</p>
             </div>
           </div>
 
@@ -130,12 +136,10 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
               await signOut({ redirectTo: "/login" });
             }}
           >
-            <button
-              type="submit"
-              className="px-3 py-1.5 text-xs font-medium text-slate-700 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 border border-slate-300 rounded-lg transition-colors cursor-pointer"
-            >
-              Sign out
-            </button>
+            <Button type="submit" variant="outline" size="sm" className="gap-1.5 text-xs">
+              <LogOut className="w-3.5 h-3.5 text-slate-500" />
+              <span>Sign out</span>
+            </Button>
           </form>
         </div>
       </header>
@@ -160,16 +164,14 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
           <div className="space-y-4">
             <div className="flex items-center justify-between border-b border-slate-200 pb-3">
               <div className="flex items-center gap-2">
-                <h2 className="text-lg font-bold text-slate-900">{activeTitle}</h2>
-                <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 border border-slate-200">
-                  {posts.length}
-                </span>
+                <h2 className="text-base font-bold text-slate-900">{activeTitle}</h2>
+                <Badge variant="secondary">{posts.length}</Badge>
               </div>
 
               {(search || platform) && (
                 <Link
                   href={folderId ? `/dashboard?folderId=${folderId}` : "/dashboard"}
-                  className="text-xs text-indigo-600 hover:text-indigo-700 font-medium underline"
+                  className="text-xs text-indigo-600 hover:text-indigo-700 font-semibold underline underline-offset-2"
                 >
                   Clear filters
                 </Link>
