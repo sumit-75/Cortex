@@ -4,18 +4,41 @@ import Script from "next/script";
 import type { Post } from "@prisma/client";
 import { PostCard } from "@/components/PostCard";
 import type { FolderWithCount } from "@/components/FolderList";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface PostGridProps {
   posts: Post[];
   folders?: FolderWithCount[];
+  isLoading?: boolean;
 }
 
-export function PostGrid({ posts, folders = [] }: PostGridProps) {
+export function PostGrid({ posts, folders = [], isLoading = false }: PostGridProps) {
   const handleTwitterScriptLoad = () => {
     if (window.twttr?.widgets?.load) {
       window.twttr.widgets.load();
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="columns-1 md:columns-2 lg:columns-3 gap-6">
+        {[1, 2, 3, 4, 5, 6].map((i) => (
+          <div key={i} className="break-inside-avoid inline-block w-full bg-white rounded-2xl border border-slate-200 overflow-hidden space-y-3 p-4 shadow-xs mb-6">
+            <div className="flex items-center justify-between">
+              <Skeleton className="h-5 w-20 rounded-full bg-slate-200" />
+              <Skeleton className="h-4 w-12 bg-slate-100" />
+            </div>
+            <Skeleton className="w-full aspect-video rounded-xl bg-slate-200/80" />
+            <Skeleton className="h-4 w-3/4 bg-slate-200" />
+            <div className="flex items-center justify-between pt-2 border-t border-slate-100">
+              <Skeleton className="h-7 w-28 rounded-lg bg-slate-100" />
+              <Skeleton className="h-3 w-16 bg-slate-100" />
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  }
 
   if (posts.length === 0) {
     return (

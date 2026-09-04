@@ -17,6 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   TooltipProvider,
 } from "@/components/ui/tooltip";
@@ -151,6 +152,22 @@ export function AddPostForm({ folders = [], defaultFolderId }: AddPostFormProps)
               )}
             </Button>
           </form>
+
+          {isPending && (
+            <div className="mt-4 p-4 border border-orange-200/80 bg-orange-50/40 rounded-2xl space-y-3 animate-in fade-in-50">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Skeleton className="h-5 w-20 rounded-full bg-orange-200/70" />
+                  <Skeleton className="h-4 w-40 bg-slate-200" />
+                </div>
+                <span className="text-[11px] font-bold text-[#FF7900] flex items-center gap-1.5">
+                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                  Fetching media details...
+                </span>
+              </div>
+              <Skeleton className="w-full h-32 rounded-xl bg-slate-200/80" />
+            </div>
+          )}
 
           {error && (
             <div className="mt-3 p-3.5 bg-rose-50 border border-rose-300/80 rounded-xl text-xs font-bold text-rose-800 shadow-2xs animate-in fade-in-50">

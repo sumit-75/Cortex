@@ -46,8 +46,8 @@ export default function DashboardLoading() {
         </aside>
 
         {/* Right Content Area Skeleton (Centered) */}
-        <section className="flex-1 p-6 md:p-8 min-w-0 bg-slate-50/70">
-          <div className="max-w-4xl mx-auto space-y-6">
+        <section className="flex-1 p-6 md:p-8 min-w-0 bg-slate-50/70 flex justify-center">
+          <div className="w-full max-w-6xl mx-auto space-y-6">
             {/* Add Post Form Skeleton */}
             <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs space-y-4">
               <div className="flex items-center justify-between">
