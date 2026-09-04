@@ -1,5 +1,5 @@
 import { auth, signOut } from "@/lib/auth";
-import { prisma } from "@/lib/prisma";
+import { prisma, withRetry } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -27,6 +27,8 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
     redirect("/login");
   }
 
+  const userId = session.user.id;
+
   const { folderId, search, platform } = await searchParams;
 
   let posts: Post[] = [];
@@ -35,30 +37,36 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
   let uncategorizedCount = 0;
 
   try {
-    // Fetch user folders with post counts
-    folders = (await prisma.folder.findMany({
-      where: { userId: session.user.id },
-      include: {
-        _count: {
-          select: { posts: true },
+    // Fetch user folders with post counts (with auto-reconnect retry)
+    folders = (await withRetry(() =>
+      prisma.folder.findMany({
+        where: { userId },
+        include: {
+          _count: {
+            select: { posts: true },
+          },
         },
-      },
-      orderBy: { createdAt: "asc" },
-    })) as FolderWithCount[];
+        orderBy: { createdAt: "asc" },
+      })
+    )) as FolderWithCount[];
 
-    totalPostsCount = await prisma.post.count({
-      where: { userId: session.user.id },
-    });
+    totalPostsCount = await withRetry(() =>
+      prisma.post.count({
+        where: { userId },
+      })
+    );
 
-    uncategorizedCount = await prisma.post.count({
-      where: {
-        userId: session.user.id,
-        folderId: null,
-      },
-    });
+    uncategorizedCount = await withRetry(() =>
+      prisma.post.count({
+        where: {
+          userId,
+          folderId: null,
+        },
+      })
+    );
 
     // Build combined Prisma filter query
-    let whereClause: any = { userId: session.user.id };
+    let whereClause: any = { userId };
 
     if (folderId === "uncategorized") {
       whereClause.folderId = null;
@@ -77,10 +85,12 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
       };
     }
 
-    posts = await prisma.post.findMany({
-      where: whereClause,
-      orderBy: { createdAt: "desc" },
-    });
+    posts = await withRetry(() =>
+      prisma.post.findMany({
+        where: whereClause,
+        orderBy: { createdAt: "desc" },
+      })
+    );
   } catch (err) {
     console.error("Error loading dashboard data:", err);
   }

@@ -1,7 +1,7 @@
 "use server";
 
 import { auth } from "@/lib/auth";
-import { prisma } from "@/lib/prisma";
+import { prisma, withRetry } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
 export async function createFolder(formData: FormData) {
@@ -11,29 +11,35 @@ export async function createFolder(formData: FormData) {
       return { success: false, error: "You must be logged in to create folders." };
     }
 
+    const userId = session.user.id;
+
     const name = formData.get("name")?.toString().trim();
     if (!name) {
       return { success: false, error: "Please enter a folder name." };
     }
 
-    // Check if folder with same name exists for this user
-    const existing = await prisma.folder.findFirst({
-      where: {
-        userId: session.user.id,
-        name: { equals: name, mode: "insensitive" },
-      },
-    });
+    // Check if folder with same name exists for this user (with auto-reconnect retry)
+    const existing = await withRetry(() =>
+      prisma.folder.findFirst({
+        where: {
+          userId: userId,
+          name: { equals: name, mode: "insensitive" },
+        },
+      })
+    );
 
     if (existing) {
       return { success: false, error: "A folder with this name already exists." };
     }
 
-    const folder = await prisma.folder.create({
-      data: {
-        userId: session.user.id,
-        name: name,
-      },
-    });
+    const folder = await withRetry(() =>
+      prisma.folder.create({
+        data: {
+          userId: userId,
+          name: name,
+        },
+      })
+    );
 
     revalidatePath("/dashboard");
     return { success: true, folder };
@@ -52,20 +58,26 @@ export async function deleteFolder(folderId: string) {
       return { success: false, error: "You must be logged in." };
     }
 
-    const folder = await prisma.folder.findFirst({
-      where: {
-        id: folderId,
-        userId: session.user.id,
-      },
-    });
+    const userId = session.user.id;
+
+    const folder = await withRetry(() =>
+      prisma.folder.findFirst({
+        where: {
+          id: folderId,
+          userId: userId,
+        },
+      })
+    );
 
     if (!folder) {
       return { success: false, error: "Folder not found or unauthorized." };
     }
 
-    await prisma.folder.delete({
-      where: { id: folderId },
-    });
+    await withRetry(() =>
+      prisma.folder.delete({
+        where: { id: folderId },
+      })
+    );
 
     revalidatePath("/dashboard");
     return { success: true };
