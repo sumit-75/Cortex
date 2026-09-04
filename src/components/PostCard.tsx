@@ -43,11 +43,22 @@ export function PostCard({ post, folders = [] }: PostCardProps) {
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Ensure embedHtml uses twitter.com format for Twitter widgets.js parser
-  const cleanEmbedHtml =
-    post.platform === "twitter"
-      ? post.embedHtml.replace(/href="https?:\/\/(www\.)?x\.com\//gi, 'href="https://twitter.com/')
-      : post.embedHtml;
+  // Normalize Twitter URL and guarantee fallback anchor text for empty blockquotes
+  const normalizedTwitterUrl = post.url.replace(/^https?:\/\/(www\.)?x\.com\//i, "https://twitter.com/");
+
+  let cleanEmbedHtml = post.embedHtml || "";
+  if (post.platform === "twitter") {
+    if (!cleanEmbedHtml.trim() || !cleanEmbedHtml.includes("<blockquote")) {
+      cleanEmbedHtml = `<blockquote class="twitter-tweet"><a href="${normalizedTwitterUrl}">View Post on Twitter / X &rarr;</a></blockquote>`;
+    } else {
+      cleanEmbedHtml = cleanEmbedHtml.replace(/href="https?:\/\/(www\.)?x\.com\//gi, 'href="https://twitter.com/');
+      // Inject fallback link text into empty <a></a> anchors so card is never empty
+      cleanEmbedHtml = cleanEmbedHtml.replace(
+        /<a ([^>]+)><\/a>/gi,
+        `<a $1 style="color: #0284c7; font-weight: 600; text-decoration: underline;">View Post on Twitter / X &rarr;</a>`
+      );
+    }
+  }
 
   // Trigger Twitter widget hydration when Twitter embed mounts
   useEffect(() => {
@@ -172,7 +183,7 @@ export function PostCard({ post, folders = [] }: PostCardProps) {
         </div>
 
         {/* Embed Media Content */}
-        <div className="p-3 bg-slate-50/40 flex items-center justify-center min-h-[100px]">
+        <div className="p-4 bg-slate-50/40 flex items-center justify-center min-h-[80px]">
           {post.platform === "youtube" ? (
             <div
               className="w-full aspect-video rounded-xl overflow-hidden shadow-xs bg-black flex items-center justify-center"
@@ -188,7 +199,7 @@ export function PostCard({ post, folders = [] }: PostCardProps) {
             />
           ) : (
             <div
-              className="w-full overflow-x-auto flex justify-center text-slate-900 text-sm py-1 [&_blockquote]:max-w-full [&_iframe]:mx-auto"
+              className="w-full overflow-x-auto flex justify-center text-slate-900 text-xs py-1 [&_blockquote]:max-w-full [&_iframe]:mx-auto"
               dangerouslySetInnerHTML={{ __html: cleanEmbedHtml }}
             />
           )}
