@@ -146,8 +146,8 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
 
       {/* Main Full-Bleed App Layout (Left Sidebar Flush to Edge) */}
       <main className="flex-1 flex flex-col md:flex-row min-h-[calc(100vh-61px)]">
-        {/* Left Sidebar: Folder Management (Flush to left edge) */}
-        <aside className="w-full md:w-64 shrink-0 border-r border-slate-200 bg-white p-5 space-y-6">
+        {/* Left Sidebar: Folder Management (Fixed & Sticky) */}
+        <aside className="w-full md:w-64 shrink-0 border-r border-slate-200 bg-white p-5 space-y-6 md:sticky md:top-[61px] md:h-[calc(100vh-61px)] md:overflow-y-auto">
           <FolderList
             folders={folders}
             totalPostsCount={totalPostsCount}
