@@ -80,17 +80,21 @@ export async function fetchOEmbed(url: string): Promise<OEmbedResult> {
     }
 
     // YouTube fallback if oEmbed endpoint is unreachable
+    const youtubeId = extractYouTubeId(url);
     return {
       platform: "youtube",
       title: "YouTube Video",
-      embedHtml: `<iframe width="100%" height="100%" src="https://www.youtube.com/embed/${extractYouTubeId(url)}" frameborder="0" allowfullscreen></iframe>`,
-      thumbnailUrl: `https://i.ytimg.com/vi/${extractYouTubeId(url)}/maxresdefault.jpg`,
+      embedHtml: `<iframe width="100%" height="100%" src="https://www.youtube.com/embed/${youtubeId}" frameborder="0" allowfullscreen></iframe>`,
+      thumbnailUrl: `https://i.ytimg.com/vi/${youtubeId}/maxresdefault.jpg`,
     };
   }
 
   if (platform === "twitter") {
+    // Convert x.com to twitter.com for publish.twitter.com oEmbed endpoint and Twitter widgets parser compatibility
+    const normalizedTwitterUrl = url.replace(/^https?:\/\/(www\.)?x\.com\//i, "https://twitter.com/");
+
     try {
-      const oembedUrl = `https://publish.twitter.com/oembed?url=${encodeURIComponent(url)}&omit_script=1`;
+      const oembedUrl = `https://publish.twitter.com/oembed?url=${encodeURIComponent(normalizedTwitterUrl)}&omit_script=1`;
       const res = await fetch(oembedUrl, { next: { revalidate: 3600 } });
 
       if (res.ok) {
@@ -101,10 +105,14 @@ export async function fetchOEmbed(url: string): Promise<OEmbedResult> {
           title = `Post by ${data.author_name}`;
         }
 
+        // Ensure embed HTML uses twitter.com URL format for widgets.js compatibility
+        let embedHtml = data.html || `<blockquote class="twitter-tweet"><a href="${normalizedTwitterUrl}"></a></blockquote>`;
+        embedHtml = embedHtml.replace(/href="https?:\/\/(www\.)?x\.com\//gi, 'href="https://twitter.com/');
+
         return {
           platform: "twitter",
           title: title,
-          embedHtml: data.html || "",
+          embedHtml: embedHtml,
           thumbnailUrl: undefined,
         };
       }
@@ -116,7 +124,7 @@ export async function fetchOEmbed(url: string): Promise<OEmbedResult> {
     return {
       platform: "twitter",
       title: "Twitter/X Post",
-      embedHtml: `<blockquote class="twitter-tweet"><a href="${url}"></a></blockquote>`,
+      embedHtml: `<blockquote class="twitter-tweet"><a href="${normalizedTwitterUrl}"></a></blockquote>`,
       thumbnailUrl: undefined,
     };
   }

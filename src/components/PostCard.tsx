@@ -43,6 +43,12 @@ export function PostCard({ post, folders = [] }: PostCardProps) {
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  // Ensure embedHtml uses twitter.com format for Twitter widgets.js parser
+  const cleanEmbedHtml =
+    post.platform === "twitter"
+      ? post.embedHtml.replace(/href="https?:\/\/(www\.)?x\.com\//gi, 'href="https://twitter.com/')
+      : post.embedHtml;
+
   // Trigger Twitter widget hydration when Twitter embed mounts
   useEffect(() => {
     if (post.platform === "twitter" && containerRef.current) {
@@ -51,11 +57,17 @@ export function PostCard({ post, folders = [] }: PostCardProps) {
           window.twttr.widgets.load(containerRef.current);
         }
       };
+
       hydrate();
-      const timer = setTimeout(hydrate, 800);
-      return () => clearTimeout(timer);
+      const interval = setInterval(hydrate, 500);
+      const timeout = setTimeout(() => clearInterval(interval), 4000);
+
+      return () => {
+        clearInterval(interval);
+        clearTimeout(timeout);
+      };
     }
-  }, [post.platform, post.embedHtml]);
+  }, [post.platform, cleanEmbedHtml]);
 
   const handleDelete = () => {
     startTransition(async () => {
@@ -160,12 +172,12 @@ export function PostCard({ post, folders = [] }: PostCardProps) {
         </div>
 
         {/* Embed Media Content */}
-        <div className="p-3 bg-slate-50/40 flex items-center justify-center">
+        <div className="p-3 bg-slate-50/40 flex items-center justify-center min-h-[100px]">
           {post.platform === "youtube" ? (
             <div
               className="w-full aspect-video rounded-xl overflow-hidden shadow-xs bg-black flex items-center justify-center"
               dangerouslySetInnerHTML={{
-                __html: post.embedHtml
+                __html: cleanEmbedHtml
                   .replace(/width="\d+"/g, 'width="100%"')
                   .replace(/height="\d+"/g, 'height="100%"')
                   .replace(
@@ -177,7 +189,7 @@ export function PostCard({ post, folders = [] }: PostCardProps) {
           ) : (
             <div
               className="w-full overflow-x-auto flex justify-center text-slate-900 text-sm py-1 [&_blockquote]:max-w-full [&_iframe]:mx-auto"
-              dangerouslySetInnerHTML={{ __html: post.embedHtml }}
+              dangerouslySetInnerHTML={{ __html: cleanEmbedHtml }}
             />
           )}
         </div>
