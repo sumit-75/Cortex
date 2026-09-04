@@ -1,14 +1,13 @@
 import { Skeleton } from "@/components/ui/skeleton";
-import { Brain } from "lucide-react";
 
 export default function DashboardLoading() {
   return (
     <div className="min-h-screen bg-slate-50/70 text-slate-900 flex flex-col font-sans">
       {/* Top Navbar Skeleton */}
-      <header className="border-b border-slate-200/90 bg-white px-6 py-3.5 flex items-center justify-between sticky top-0 z-50 shadow-xs">
-        <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-[#FF7900] flex items-center justify-center text-white shadow-md shadow-orange-500/20">
-            <Brain className="w-5 h-5 animate-pulse" />
+      <header className="border-b border-slate-200/90 bg-white px-4 sm:px-6 py-3 sm:py-3.5 flex items-center justify-between sticky top-0 z-50 shadow-xs">
+        <div className="flex items-center gap-2.5 sm:gap-3">
+          <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-[#FF7900] flex items-center justify-center font-black text-white text-xs sm:text-sm shadow-md shadow-orange-500/20 shrink-0 select-none">
+            CX
           </div>
           <div className="space-y-1">
             <Skeleton className="h-4 w-20 bg-slate-200" />

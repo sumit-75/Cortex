@@ -12,6 +12,11 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 export const metadata: Metadata = {
   title: "Cortex - Personal Link & Media Vault",
   description: "Save YouTube videos and Twitter/X posts in organized folders.",
+  icons: {
+    icon: "/icon.svg",
+    shortcut: "/icon.svg",
+    apple: "/icon.svg",
+  },
 };
 
 export default function RootLayout({

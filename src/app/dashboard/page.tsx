@@ -9,7 +9,7 @@ import { PostGrid } from "@/components/PostGrid";
 import { PostGridClientWrapper } from "@/components/PostGridClientWrapper";
 import { FolderList, FolderWithCount } from "@/components/FolderList";
 import { SearchFilter } from "@/components/SearchFilter";
-import { Brain, LogOut } from "lucide-react";
+import { LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import type { Post } from "@prisma/client";
@@ -125,8 +125,8 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
       {/* Top Navbar */}
       <header className="border-b border-slate-200/90 bg-white px-4 sm:px-6 py-3 sm:py-3.5 flex items-center justify-between sticky top-0 z-50 shadow-xs">
         <div className="flex items-center gap-2.5 sm:gap-3">
-          <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-[#FF7900] flex items-center justify-center text-white shadow-md shadow-orange-500/20 shrink-0">
-            <Brain className="w-4 h-4 sm:w-5 sm:h-5" />
+          <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-[#FF7900] flex items-center justify-center font-black text-white text-xs sm:text-sm shadow-md shadow-orange-500/20 shrink-0 select-none">
+            CX
           </div>
           <div>
             <h1 className="text-sm sm:text-base font-extrabold tracking-tight text-slate-900 leading-tight">Cortex</h1>
