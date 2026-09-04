@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useTransition, useEffect } from "react";
-import { useRouter, useSearchParams, usePathname } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useSearchParams, usePathname } from "next/navigation";
+import { useNavLoading } from "@/components/NavigationLoadingContext";
 import { Search, X } from "lucide-react";
 import { YoutubeIcon, TwitterIcon } from "@/components/icons";
 import { Input } from "@/components/ui/input";
@@ -9,15 +10,14 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
 export function SearchFilter() {
-  const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const { navigateToUrl } = useNavLoading();
 
   const currentSearch = searchParams.get("search") || "";
   const currentPlatform = searchParams.get("platform") || "";
 
   const [searchTerm, setSearchTerm] = useState(currentSearch);
-  const [isPending, startTransition] = useTransition();
 
   // Keep search input state in sync with URL
   useEffect(() => {
@@ -39,9 +39,8 @@ export function SearchFilter() {
       params.delete("platform");
     }
 
-    startTransition(() => {
-      router.push(`${pathname}?${params.toString()}`);
-    });
+    const targetUrl = `${pathname}?${params.toString()}`;
+    navigateToUrl(targetUrl);
   };
 
   const handleSearchChange = (value: string) => {

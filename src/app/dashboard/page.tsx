@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { AddPostForm } from "@/components/AddPostForm";
 import { PostGrid } from "@/components/PostGrid";
+import { PostGridClientWrapper } from "@/components/PostGridClientWrapper";
 import { FolderList, FolderWithCount } from "@/components/FolderList";
 import { SearchFilter } from "@/components/SearchFilter";
 import { Brain, LogOut } from "lucide-react";
@@ -60,7 +61,7 @@ async function PostGridContainer({
     })
   );
 
-  return <PostGrid posts={posts} folders={folders} />;
+  return <PostGridClientWrapper posts={posts} folders={folders} />;
 }
 
 export default async function DashboardPage({ searchParams }: DashboardPageProps) {

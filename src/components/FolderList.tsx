@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { useNavLoading } from "@/components/NavigationLoadingContext";
 import { createFolder, deleteFolder } from "@/app/actions/folder";
 import {
   Layers,
@@ -43,7 +44,10 @@ export function FolderList({
   uncategorizedCount,
 }: FolderListProps) {
   const searchParams = useSearchParams();
-  const currentFolderId = searchParams.get("folderId");
+  const { activeFolderId, navigateToFolder } = useNavLoading();
+  
+  const currentFolderId =
+    activeFolderId !== undefined ? activeFolderId : searchParams.get("folderId");
 
   const [newFolderName, setNewFolderName] = useState("");
   const [showAddForm, setShowAddForm] = useState(false);
@@ -148,6 +152,10 @@ export function FolderList({
           {/* All Posts */}
           <Link
             href="/dashboard"
+            onClick={(e) => {
+              e.preventDefault();
+              navigateToFolder(null);
+            }}
             className={`group flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold transition-all ${
               !currentFolderId
                 ? "bg-[#FF7900] text-white shadow-md shadow-orange-500/20 border border-[#e06a00]"
@@ -169,6 +177,10 @@ export function FolderList({
           {/* Uncategorized */}
           <Link
             href="/dashboard?folderId=uncategorized"
+            onClick={(e) => {
+              e.preventDefault();
+              navigateToFolder("uncategorized");
+            }}
             className={`group flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold transition-all ${
               currentFolderId === "uncategorized"
                 ? "bg-[#FF7900] text-white shadow-md shadow-orange-500/20 border border-[#e06a00]"
@@ -199,6 +211,10 @@ export function FolderList({
               <div key={folder.id} className="group relative flex items-center">
                 <Link
                   href={`/dashboard?folderId=${folder.id}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navigateToFolder(folder.id);
+                  }}
                   className={`flex-1 flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold transition-all ${
                     isActive
                       ? "bg-[#FF7900] text-white shadow-md shadow-orange-500/20 border border-[#e06a00]"
