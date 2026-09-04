@@ -105,16 +105,16 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
       : "All Saved Posts";
 
   return (
-    <div className="min-h-screen bg-white text-slate-900 flex flex-col font-sans">
+    <div className="min-h-screen bg-slate-50/70 text-slate-900 flex flex-col font-sans">
       {/* Top Navbar */}
-      <header className="border-b border-slate-200 bg-white px-6 py-3 flex items-center justify-between sticky top-0 z-50 shadow-2xs">
+      <header className="border-b border-slate-200/90 bg-white px-6 py-3.5 flex items-center justify-between sticky top-0 z-50 shadow-xs">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-[#FF7900] flex items-center justify-center text-white shadow-md">
+          <div className="w-9 h-9 rounded-xl bg-[#FF7900] flex items-center justify-center text-white shadow-md shadow-orange-500/20">
             <Brain className="w-5 h-5" />
           </div>
           <div>
-            <h1 className="text-base font-bold tracking-tight text-slate-900 leading-tight">Cortex</h1>
-            <p className="text-[10px] text-slate-500 font-medium">Personal Link & Media Library</p>
+            <h1 className="text-base font-extrabold tracking-tight text-slate-900 leading-tight">Cortex</h1>
+            <p className="text-[11px] text-slate-500 font-semibold">Personal Link & Media Library</p>
           </div>
         </div>
 
@@ -127,7 +127,7 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
                 width={36}
                 height={36}
                 referrerPolicy="no-referrer"
-                className="rounded-full border border-slate-200 shadow-2xs"
+                className="rounded-full border-2 border-slate-200 shadow-2xs"
               />
             ) : (
               <div className="w-9 h-9 rounded-full bg-[#FF7900] flex items-center justify-center font-bold text-white shadow-2xs">
@@ -135,8 +135,8 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
               </div>
             )}
             <div className="hidden sm:block text-left">
-              <p className="text-xs font-semibold text-slate-900">{session.user.name}</p>
-              <p className="text-[10px] text-slate-500">{session.user.email}</p>
+              <p className="text-xs font-bold text-slate-900">{session.user.name}</p>
+              <p className="text-[11px] text-slate-500 font-medium">{session.user.email}</p>
             </div>
           </div>
 
@@ -146,8 +146,8 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
               await signOut({ redirectTo: "/login" });
             }}
           >
-            <Button type="submit" variant="outline" size="sm" className="gap-1.5 text-xs">
-              <LogOut className="w-3.5 h-3.5 text-slate-500" />
+            <Button type="submit" variant="outline" size="sm" className="gap-1.5 text-xs font-bold border-slate-300 hover:border-slate-400 text-slate-800">
+              <LogOut className="w-3.5 h-3.5 text-slate-600" />
               <span>Sign out</span>
             </Button>
           </form>
@@ -155,9 +155,9 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
       </header>
 
       {/* Main Full-Bleed App Layout (Left Sidebar Flush to Edge) */}
-      <main className="flex-1 flex flex-col md:flex-row min-h-[calc(100vh-61px)]">
+      <main className="flex-1 flex flex-col md:flex-row min-h-[calc(100vh-65px)]">
         {/* Left Sidebar: Folder Management (Fixed & Sticky) */}
-        <aside className="w-full md:w-64 shrink-0 border-r border-slate-200 bg-white p-5 space-y-6 md:sticky md:top-[61px] md:h-[calc(100vh-61px)] md:overflow-y-auto">
+        <aside className="w-full md:w-64 shrink-0 border-r border-slate-200/90 bg-white p-5 space-y-6 md:sticky md:top-[65px] md:h-[calc(100vh-65px)] md:overflow-y-auto shadow-2xs">
           <FolderList
             folders={folders}
             totalPostsCount={totalPostsCount}
@@ -166,22 +166,24 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
         </aside>
 
         {/* Right Main Content Area */}
-        <section className="flex-1 p-6 md:p-8 space-y-6 min-w-0 max-w-7xl bg-white">
+        <section className="flex-1 p-6 md:p-8 space-y-6 min-w-0 max-w-7xl bg-slate-50/70">
           <AddPostForm folders={folders} defaultFolderId={folderId} />
 
           <SearchFilter />
 
           <div className="space-y-4">
             <div className="flex items-center justify-between border-b border-slate-200 pb-3">
-              <div className="flex items-center gap-2">
-                <h2 className="text-base font-bold text-slate-900">{activeTitle}</h2>
-                <Badge variant="secondary">{posts.length}</Badge>
+              <div className="flex items-center gap-2.5">
+                <h2 className="text-base font-bold text-slate-900 tracking-tight">{activeTitle}</h2>
+                <Badge variant="secondary" className="bg-slate-200/80 text-slate-800 font-bold border border-slate-300/80 px-2.5">
+                  {posts.length}
+                </Badge>
               </div>
 
               {(search || platform) && (
                 <Link
                   href={folderId ? `/dashboard?folderId=${folderId}` : "/dashboard"}
-                  className="text-xs text-[#FF7900] hover:text-[#e06a00] font-semibold underline underline-offset-2"
+                  className="text-xs text-[#FF7900] hover:text-[#e06a00] font-bold underline underline-offset-4"
                 >
                   Clear filters
                 </Link>

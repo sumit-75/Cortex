@@ -84,11 +84,11 @@ export function AddPostForm({ folders = [], defaultFolderId }: AddPostFormProps)
 
   return (
     <TooltipProvider>
-      <Card className="shadow-sm border-slate-200/80 hover:border-slate-300 transition-all bg-white">
+      <Card className="shadow-xs border-slate-200 hover:border-slate-300 transition-all bg-white rounded-2xl">
         <CardContent className="p-6">
           <div className="flex items-center justify-between mb-3">
             <label htmlFor="url-input" className="text-sm font-bold text-slate-900 flex items-center gap-2 tracking-tight">
-              <Link2 className="w-4 h-4 text-[#FF7900]" />
+              <Link2 className="w-4 h-4 text-[#FF7900] stroke-[2.5]" />
               Save a new link
             </label>
             {getPlatformBadge(detectedPlatform)}
@@ -107,18 +107,18 @@ export function AddPostForm({ folders = [], defaultFolderId }: AddPostFormProps)
                 }}
                 placeholder="Paste YouTube or Twitter/X post link..."
                 disabled={isPending}
-                className="h-11 pl-4 text-xs font-medium"
+                className="h-11 pl-4 text-xs font-semibold border-slate-300 hover:border-slate-400 focus:border-[#FF7900]"
               />
             </div>
 
             {folders.length > 0 && (
-              <div className="w-full sm:w-56 shrink-0">
+              <div className="w-full sm:w-60 shrink-0">
                 <Select
                   value={selectedFolderId}
                   onValueChange={setSelectedFolderId}
                   disabled={isPending}
                 >
-                  <SelectTrigger className="h-11">
+                  <SelectTrigger className="h-11 border-slate-300 hover:border-slate-400 font-bold text-slate-900">
                     <SelectValue placeholder="Select folder..." />
                   </SelectTrigger>
                   <SelectContent>
@@ -136,7 +136,7 @@ export function AddPostForm({ folders = [], defaultFolderId }: AddPostFormProps)
             <Button
               type="submit"
               disabled={isPending || !url.trim()}
-              className="h-11 px-6 text-xs font-bold gap-2 shrink-0 shadow-sm hover:shadow-md bg-[#FF7900] hover:bg-[#e06a00]"
+              className="h-11 px-6 text-xs font-bold gap-2 shrink-0 shadow-xs hover:shadow-md bg-[#FF7900] hover:bg-[#e06a00] text-white"
             >
               {isPending ? (
                 <>
@@ -153,13 +153,13 @@ export function AddPostForm({ folders = [], defaultFolderId }: AddPostFormProps)
           </form>
 
           {error && (
-            <div className="mt-3 p-3 bg-rose-50 border border-rose-200 rounded-xl text-xs font-semibold text-rose-700 animate-in fade-in-50">
+            <div className="mt-3 p-3.5 bg-rose-50 border border-rose-300/80 rounded-xl text-xs font-bold text-rose-800 shadow-2xs animate-in fade-in-50">
               {error}
             </div>
           )}
 
           {success && (
-            <div className="mt-3 p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-xs font-semibold text-emerald-700 animate-in fade-in-50">
+            <div className="mt-3 p-3.5 bg-emerald-50 border border-emerald-300/80 rounded-xl text-xs font-bold text-emerald-800 shadow-2xs animate-in fade-in-50">
               {success}
             </div>
           )}
