@@ -10,7 +10,7 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Second Brain - Personal Link & Post Library",
+  title: "Cortex - Personal Link & Media Vault",
   description: "Save YouTube videos and Twitter/X posts in organized folders.",
 };
 

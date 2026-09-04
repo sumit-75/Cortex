@@ -103,7 +103,7 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
             <Brain className="w-5 h-5" />
           </div>
           <div>
-            <h1 className="text-base font-bold tracking-tight text-slate-900 leading-tight">Second Brain</h1>
+            <h1 className="text-base font-bold tracking-tight text-slate-900 leading-tight">Cortex</h1>
             <p className="text-[10px] text-slate-500 font-medium">Personal Link & Media Library</p>
           </div>
         </div>

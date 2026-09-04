@@ -12,9 +12,9 @@ export default async function LoginPage() {
       <div className="max-w-md w-full space-y-8 p-8 bg-white border border-slate-200 rounded-2xl shadow-xl text-center">
         <div>
           <div className="w-12 h-12 rounded-2xl bg-indigo-600 flex items-center justify-center font-black text-white text-xl mx-auto mb-4 shadow-md">
-            SB
+            CX
           </div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900">Welcome to Second Brain</h1>
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900">Welcome to Cortex</h1>
           <p className="mt-2 text-sm text-slate-600">
             Save and organize your favorite posts from YouTube and Twitter/X in one clean dashboard.
           </p>

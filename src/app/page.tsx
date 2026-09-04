@@ -12,7 +12,7 @@ export default async function Home() {
         </div>
 
         <h1 className="text-4xl sm:text-6xl font-extrabold text-slate-900 tracking-tight">
-          Your Personal <span className="text-indigo-600">Second Brain</span>
+          Welcome to <span className="text-indigo-600">Cortex</span>
         </h1>
         <p className="text-lg text-slate-600">
           Save posts and videos from YouTube and Twitter/X into one central, organized library.
