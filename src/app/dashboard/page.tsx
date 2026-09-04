@@ -165,32 +165,34 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
           />
         </aside>
 
-        {/* Right Main Content Area */}
-        <section className="flex-1 p-6 md:p-8 space-y-6 min-w-0 max-w-7xl bg-slate-50/70">
-          <AddPostForm folders={folders} defaultFolderId={folderId} />
+        {/* Right Main Content Area (Centered) */}
+        <section className="flex-1 p-6 md:p-8 min-w-0 bg-slate-50/70">
+          <div className="max-w-4xl lg:max-w-5xl mx-auto space-y-6">
+            <AddPostForm folders={folders} defaultFolderId={folderId} />
 
-          <SearchFilter />
+            <SearchFilter />
 
-          <div className="space-y-4">
-            <div className="flex items-center justify-between border-b border-slate-200 pb-3">
-              <div className="flex items-center gap-2.5">
-                <h2 className="text-base font-bold text-slate-900 tracking-tight">{activeTitle}</h2>
-                <Badge variant="secondary" className="bg-slate-200/80 text-slate-800 font-bold border border-slate-300/80 px-2.5">
-                  {posts.length}
-                </Badge>
+            <div className="space-y-4">
+              <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+                <div className="flex items-center gap-2.5">
+                  <h2 className="text-base font-bold text-slate-900 tracking-tight">{activeTitle}</h2>
+                  <Badge variant="secondary" className="bg-slate-200/80 text-slate-800 font-bold border border-slate-300/80 px-2.5">
+                    {posts.length}
+                  </Badge>
+                </div>
+
+                {(search || platform) && (
+                  <Link
+                    href={folderId ? `/dashboard?folderId=${folderId}` : "/dashboard"}
+                    className="text-xs text-[#FF7900] hover:text-[#e06a00] font-bold underline underline-offset-4"
+                  >
+                    Clear filters
+                  </Link>
+                )}
               </div>
 
-              {(search || platform) && (
-                <Link
-                  href={folderId ? `/dashboard?folderId=${folderId}` : "/dashboard"}
-                  className="text-xs text-[#FF7900] hover:text-[#e06a00] font-bold underline underline-offset-4"
-                >
-                  Clear filters
-                </Link>
-              )}
+              <PostGrid posts={posts} folders={folders} />
             </div>
-
-            <PostGrid posts={posts} folders={folders} />
           </div>
         </section>
       </main>

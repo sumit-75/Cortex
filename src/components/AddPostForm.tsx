@@ -112,7 +112,7 @@ export function AddPostForm({ folders = [], defaultFolderId }: AddPostFormProps)
             </div>
 
             {folders.length > 0 && (
-              <div className="w-full sm:w-60 shrink-0">
+              <div className="w-full sm:w-48 shrink-0">
                 <Select
                   value={selectedFolderId}
                   onValueChange={setSelectedFolderId}
