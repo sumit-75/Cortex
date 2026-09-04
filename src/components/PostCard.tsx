@@ -46,9 +46,14 @@ export function PostCard({ post, folders = [] }: PostCardProps) {
   // Trigger Twitter widget hydration when Twitter embed mounts
   useEffect(() => {
     if (post.platform === "twitter" && containerRef.current) {
-      if (window.twttr?.widgets?.load) {
-        window.twttr.widgets.load(containerRef.current);
-      }
+      const hydrate = () => {
+        if (window.twttr?.widgets?.load) {
+          window.twttr.widgets.load(containerRef.current);
+        }
+      };
+      hydrate();
+      const timer = setTimeout(hydrate, 800);
+      return () => clearTimeout(timer);
     }
   }, [post.platform, post.embedHtml]);
 
