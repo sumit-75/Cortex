@@ -118,7 +118,7 @@ export function PostCard({ post, folders = [] }: PostCardProps) {
     <TooltipProvider>
       <Card
         ref={containerRef}
-        className={`h-fit overflow-hidden flex flex-col justify-between border-slate-200/80 hover:shadow-lg hover:border-slate-300 transition-all duration-300 ${
+        className={`break-inside-avoid inline-block w-full h-fit overflow-hidden flex flex-col justify-between border-slate-200/80 hover:shadow-lg hover:border-slate-300 transition-all duration-300 mb-6 ${
           isPending ? "opacity-40 pointer-events-none" : ""
         }`}
       >
