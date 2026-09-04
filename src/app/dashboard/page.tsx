@@ -3,6 +3,7 @@ import { prisma, withRetry } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import { Suspense } from "react";
 import { AddPostForm } from "@/components/AddPostForm";
 import { PostGrid } from "@/components/PostGrid";
 import { FolderList, FolderWithCount } from "@/components/FolderList";
@@ -20,6 +21,48 @@ interface DashboardPageProps {
   }>;
 }
 
+async function PostGridContainer({
+  userId,
+  folderId,
+  search,
+  platform,
+  folders,
+}: {
+  userId: string;
+  folderId?: string;
+  search?: string;
+  platform?: string;
+  folders: FolderWithCount[];
+}) {
+  let whereClause: any = { userId };
+
+  if (folderId === "uncategorized") {
+    whereClause.folderId = null;
+  } else if (folderId) {
+    whereClause.folderId = folderId;
+  }
+
+  if (platform && (platform === "youtube" || platform === "twitter")) {
+    whereClause.platform = platform;
+  }
+
+  if (search && search.trim()) {
+    whereClause.title = {
+      contains: search.trim(),
+      mode: "insensitive",
+    };
+  }
+
+  const posts = await withRetry(() =>
+    prisma.post.findMany({
+      where: whereClause,
+      orderBy: { createdAt: "desc" },
+    })
+  );
+
+  return <PostGrid posts={posts} folders={folders} />;
+}
+
 export default async function DashboardPage({ searchParams }: DashboardPageProps) {
   const session = await auth();
 
@@ -31,7 +74,6 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
 
   const { folderId, search, platform } = await searchParams;
 
-  let posts: Post[] = [];
   let folders: FolderWithCount[] = [];
   let totalPostsCount = 0;
   let uncategorizedCount = 0;
@@ -62,33 +104,6 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
           userId,
           folderId: null,
         },
-      })
-    );
-
-    // Build combined Prisma filter query
-    let whereClause: any = { userId };
-
-    if (folderId === "uncategorized") {
-      whereClause.folderId = null;
-    } else if (folderId) {
-      whereClause.folderId = folderId;
-    }
-
-    if (platform && (platform === "youtube" || platform === "twitter")) {
-      whereClause.platform = platform;
-    }
-
-    if (search && search.trim()) {
-      whereClause.title = {
-        contains: search.trim(),
-        mode: "insensitive",
-      };
-    }
-
-    posts = await withRetry(() =>
-      prisma.post.findMany({
-        where: whereClause,
-        orderBy: { createdAt: "desc" },
       })
     );
   } catch (err) {
@@ -176,9 +191,6 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
               <div className="flex items-center justify-between border-b border-slate-200 pb-3">
                 <div className="flex items-center gap-2.5">
                   <h2 className="text-base font-bold text-slate-900 tracking-tight">{activeTitle}</h2>
-                  <Badge variant="secondary" className="bg-slate-200/80 text-slate-800 font-bold border border-slate-300/80 px-2.5">
-                    {posts.length}
-                  </Badge>
                 </div>
 
                 {(search || platform) && (
@@ -191,7 +203,18 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
                 )}
               </div>
 
-              <PostGrid posts={posts} folders={folders} />
+              <Suspense
+                key={`${folderId || "all"}-${search || ""}-${platform || "all"}`}
+                fallback={<PostGrid posts={[]} isLoading={true} />}
+              >
+                <PostGridContainer
+                  userId={userId}
+                  folderId={folderId}
+                  search={search}
+                  platform={platform}
+                  folders={folders}
+                />
+              </Suspense>
             </div>
           </div>
         </section>
