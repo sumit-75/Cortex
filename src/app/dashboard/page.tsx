@@ -166,8 +166,8 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
         </aside>
 
         {/* Right Main Content Area (Centered) */}
-        <section className="flex-1 p-6 md:p-8 min-w-0 bg-slate-50/70">
-          <div className="max-w-4xl lg:max-w-5xl mx-auto space-y-6">
+        <section className="flex-1 p-6 md:p-8 min-w-0 bg-slate-50/70 flex justify-center">
+          <div className="w-full max-w-6xl space-y-6 mx-auto">
             <AddPostForm folders={folders} defaultFolderId={folderId} />
 
             <SearchFilter />
