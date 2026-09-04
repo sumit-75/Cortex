@@ -191,9 +191,16 @@ export function PostCard({ post, folders = [] }: PostCardProps) {
                 __html: cleanEmbedHtml
                   .replace(/width="\d+"/g, 'width="100%"')
                   .replace(/height="\d+"/g, 'height="100%"')
+                  .replace(/src="([^"]+)"/g, (_match, srcUrl) => {
+                    if (srcUrl.includes("youtube.com") || srcUrl.includes("youtu.be")) {
+                      const separator = srcUrl.includes("?") ? "&" : "?";
+                      return `src="${srcUrl}${separator}vq=hd1080&rel=0"`;
+                    }
+                    return _match;
+                  })
                   .replace(
                     /<iframe /g,
-                    '<iframe class="w-full h-full border-0 rounded-xl" '
+                    '<iframe class="w-full h-full border-0 rounded-xl" loading="lazy" '
                   ),
               }}
             />
