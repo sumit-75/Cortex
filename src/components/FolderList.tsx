@@ -111,7 +111,7 @@ export function FolderList({
                 )}
               </Button>
             </TooltipTrigger>
-            <TooltipContent>
+            <TooltipContent side="bottom" align="end">
               {showAddForm ? "Close form" : "Create new category folder"}
             </TooltipContent>
           </Tooltip>
@@ -250,7 +250,7 @@ export function FolderList({
                           <Trash2 className="w-3.5 h-3.5" />
                         </button>
                       </TooltipTrigger>
-                      <TooltipContent>Delete folder</TooltipContent>
+                      <TooltipContent side="right">Delete folder</TooltipContent>
                     </Tooltip>
                   )}
                 </div>

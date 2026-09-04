@@ -143,7 +143,7 @@ export function PostCard({ post, folders = [] }: PostCardProps) {
                   <ExternalLink className="w-4 h-4" />
                 </a>
               </TooltipTrigger>
-              <TooltipContent>Open original link</TooltipContent>
+              <TooltipContent side="top">Open original link</TooltipContent>
             </Tooltip>
 
             {showConfirmDelete ? (
@@ -176,7 +176,7 @@ export function PostCard({ post, folders = [] }: PostCardProps) {
                     <Trash2 className="w-4 h-4" />
                   </button>
                 </TooltipTrigger>
-                <TooltipContent>Delete post</TooltipContent>
+                <TooltipContent side="top">Delete post</TooltipContent>
               </Tooltip>
             )}
           </div>
