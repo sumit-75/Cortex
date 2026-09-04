@@ -123,30 +123,30 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
   return (
     <div className="min-h-screen bg-slate-50/70 text-slate-900 flex flex-col font-sans">
       {/* Top Navbar */}
-      <header className="border-b border-slate-200/90 bg-white px-6 py-3.5 flex items-center justify-between sticky top-0 z-50 shadow-xs">
-        <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-[#FF7900] flex items-center justify-center text-white shadow-md shadow-orange-500/20">
-            <Brain className="w-5 h-5" />
+      <header className="border-b border-slate-200/90 bg-white px-4 sm:px-6 py-3 sm:py-3.5 flex items-center justify-between sticky top-0 z-50 shadow-xs">
+        <div className="flex items-center gap-2.5 sm:gap-3">
+          <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-[#FF7900] flex items-center justify-center text-white shadow-md shadow-orange-500/20 shrink-0">
+            <Brain className="w-4 h-4 sm:w-5 sm:h-5" />
           </div>
           <div>
-            <h1 className="text-base font-extrabold tracking-tight text-slate-900 leading-tight">Cortex</h1>
-            <p className="text-[11px] text-slate-500 font-semibold">Personal Link & Media Library</p>
+            <h1 className="text-sm sm:text-base font-extrabold tracking-tight text-slate-900 leading-tight">Cortex</h1>
+            <p className="text-[10px] sm:text-[11px] text-slate-500 font-semibold">Personal Link & Media Library</p>
           </div>
         </div>
 
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-4">
+          <div className="flex items-center gap-2 sm:gap-3">
             {session.user.image ? (
               <Image
                 src={session.user.image}
                 alt={session.user.name || "User avatar"}
-                width={36}
-                height={36}
+                width={32}
+                height={32}
                 referrerPolicy="no-referrer"
-                className="rounded-full border-2 border-slate-200 shadow-2xs"
+                className="rounded-full border-2 border-slate-200 shadow-2xs sm:w-9 sm:h-9"
               />
             ) : (
-              <div className="w-9 h-9 rounded-full bg-[#FF7900] flex items-center justify-center font-bold text-white shadow-2xs">
+              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#FF7900] flex items-center justify-center font-bold text-white shadow-2xs text-xs sm:text-sm">
                 {session.user.name?.[0] || session.user.email?.[0] || "U"}
               </div>
             )}
@@ -162,18 +162,18 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
               await signOut({ redirectTo: "/login" });
             }}
           >
-            <Button type="submit" variant="outline" size="sm" className="gap-1.5 text-xs font-bold border-slate-300 hover:border-slate-400 text-slate-800">
+            <Button type="submit" variant="outline" size="sm" className="gap-1.5 text-xs font-bold border-slate-300 hover:border-slate-400 text-slate-800 h-8 px-2.5 sm:px-3">
               <LogOut className="w-3.5 h-3.5 text-slate-600" />
-              <span>Sign out</span>
+              <span className="hidden xs:inline sm:inline">Sign out</span>
             </Button>
           </form>
         </div>
       </header>
 
-      {/* Main Full-Bleed App Layout (Left Sidebar Flush to Edge) */}
+      {/* Main Full-Bleed App Layout */}
       <main className="flex-1 flex flex-col md:flex-row min-h-[calc(100vh-65px)]">
-        {/* Left Sidebar: Folder Management (Fixed & Sticky) */}
-        <aside className="w-full md:w-64 shrink-0 border-r border-slate-200/90 bg-white p-5 space-y-6 md:sticky md:top-[65px] md:h-[calc(100vh-65px)] md:overflow-y-auto shadow-2xs">
+        {/* Left Sidebar / Mobile Category Bar */}
+        <aside className="w-full md:w-64 shrink-0 border-b md:border-b-0 md:border-r border-slate-200/90 bg-slate-50/70 md:bg-white p-3.5 sm:p-4 md:p-5 md:sticky md:top-[65px] md:h-[calc(100vh-65px)] md:overflow-y-auto shadow-2xs">
           <FolderList
             folders={folders}
             totalPostsCount={totalPostsCount}
@@ -182,7 +182,7 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
         </aside>
 
         {/* Right Main Content Area (Centered) */}
-        <section className="flex-1 p-6 md:p-8 min-w-0 bg-slate-50/70 flex justify-center">
+        <section className="flex-1 p-4 sm:p-6 md:p-8 min-w-0 bg-slate-50/70 flex justify-center">
           <div className="w-full max-w-6xl space-y-6 mx-auto">
             <AddPostForm folders={folders} defaultFolderId={folderId} />
 

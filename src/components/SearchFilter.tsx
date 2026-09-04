@@ -72,7 +72,7 @@ export function SearchFilter() {
               value={searchTerm}
               onChange={(e) => handleSearchChange(e.target.value)}
               placeholder="Search saved posts by title..."
-              className="pl-9 pr-9 font-semibold border-slate-300 hover:border-slate-400 focus:border-[#FF7900]"
+              className="pl-9 pr-9 font-semibold border-slate-300 hover:border-slate-400 focus:border-[#FF7900] text-sm sm:text-xs"
             />
 
             {searchTerm && (
@@ -86,12 +86,12 @@ export function SearchFilter() {
           </div>
 
           {/* Platform Filter Pills */}
-          <div className="flex items-center gap-1 bg-slate-100/90 p-1 rounded-xl border border-slate-200 shrink-0">
+          <div className="flex items-center gap-1 bg-slate-100/90 p-1 rounded-xl border border-slate-200 overflow-x-auto max-w-full no-scrollbar shrink-0">
             <Button
               variant={!currentPlatform || currentPlatform === "all" ? "default" : "ghost"}
               size="sm"
               onClick={() => handlePlatformChange("all")}
-              className={`h-8 text-xs px-3 font-bold transition-all ${
+              className={`h-8 text-xs px-3 font-bold shrink-0 transition-all ${
                 !currentPlatform || currentPlatform === "all"
                   ? "bg-[#FF7900] hover:bg-[#e06a00] text-white shadow-2xs"
                   : "text-slate-700 hover:bg-white hover:text-slate-900"
@@ -103,7 +103,7 @@ export function SearchFilter() {
               variant={currentPlatform === "youtube" ? "default" : "ghost"}
               size="sm"
               onClick={() => handlePlatformChange("youtube")}
-              className={`h-8 text-xs px-3 font-bold gap-1.5 transition-all ${
+              className={`h-8 text-xs px-3 font-bold gap-1.5 shrink-0 transition-all ${
                 currentPlatform === "youtube"
                   ? "bg-red-600 hover:bg-red-700 text-white shadow-2xs"
                   : "text-slate-700 hover:bg-white hover:text-slate-900"
@@ -116,7 +116,7 @@ export function SearchFilter() {
               variant={currentPlatform === "twitter" ? "default" : "ghost"}
               size="sm"
               onClick={() => handlePlatformChange("twitter")}
-              className={`h-8 text-xs px-3 font-bold gap-1.5 transition-all ${
+              className={`h-8 text-xs px-3 font-bold gap-1.5 shrink-0 transition-all ${
                 currentPlatform === "twitter"
                   ? "bg-sky-500 hover:bg-sky-600 text-white shadow-2xs"
                   : "text-slate-700 hover:bg-white hover:text-slate-900"

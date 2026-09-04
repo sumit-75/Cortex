@@ -213,14 +213,14 @@ export function PostCard({ post, folders = [] }: PostCardProps) {
         </div>
 
         {/* Card Footer Metadata & Folder Selector */}
-        <div className="px-4 py-2.5 border-t border-slate-200 bg-slate-50/80 flex items-center justify-between gap-2 text-xs text-slate-600">
-          <div className="w-44 shrink-0">
+        <div className="px-3.5 sm:px-4 py-2.5 border-t border-slate-200 bg-slate-50/80 flex items-center justify-between gap-2 text-xs text-slate-600">
+          <div className="flex-1 sm:w-44 sm:flex-initial min-w-0">
             <Select
               value={post.folderId || "none"}
               onValueChange={handleFolderChange}
               disabled={isPending}
             >
-              <SelectTrigger className="h-8 text-xs font-semibold px-2.5 py-1 border-slate-300 hover:border-slate-400 bg-white text-slate-900 shadow-2xs rounded-lg">
+              <SelectTrigger className="h-8 text-xs font-semibold px-2.5 py-1 border-slate-300 hover:border-slate-400 bg-white text-slate-900 shadow-2xs rounded-lg w-full">
                 <SelectValue placeholder="Select folder..." />
               </SelectTrigger>
               <SelectContent>

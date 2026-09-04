@@ -87,7 +87,131 @@ export function FolderList({
 
   return (
     <TooltipProvider>
-      <div className="space-y-4">
+      {/* Mobile Horizontal Category Bar (Visible on mobile < md) */}
+      <div className="block md:hidden space-y-3 bg-white p-3.5 rounded-2xl border border-slate-200/90 shadow-2xs">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <FolderOpen className="w-4 h-4 text-[#FF7900]" />
+            <h2 className="text-[11px] font-extrabold uppercase tracking-wider text-slate-700">
+              Library Folders
+            </h2>
+          </div>
+
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setShowAddForm(!showAddForm)}
+            className="h-7 px-2.5 text-xs font-bold text-[#FF7900] hover:text-[#e06a00] hover:bg-orange-50 border border-orange-200/80 bg-orange-50/50 rounded-lg"
+          >
+            {showAddForm ? (
+              <X className="w-3.5 h-3.5" />
+            ) : (
+              <>
+                <Plus className="w-3.5 h-3.5 mr-1 stroke-[2.5]" />
+                New Folder
+              </>
+            )}
+          </Button>
+        </div>
+
+        {/* Add Folder Inline Form on Mobile */}
+        {showAddForm && (
+          <form onSubmit={handleCreateFolder} className="space-y-2 pt-1 animate-in fade-in-50 duration-200">
+            <div className="flex gap-2">
+              <Input
+                type="text"
+                value={newFolderName}
+                onChange={(e) => setNewFolderName(e.target.value)}
+                placeholder="Folder name..."
+                autoFocus
+                disabled={isPending}
+                className="h-9 text-sm font-medium border-slate-300 focus:border-[#FF7900]"
+              />
+              <Button
+                type="submit"
+                size="sm"
+                disabled={isPending || !newFolderName.trim()}
+                className="h-9 px-4 shrink-0 bg-[#FF7900] hover:bg-[#e06a00] text-white font-bold text-xs"
+              >
+                {isPending ? "..." : "Save"}
+              </Button>
+            </div>
+            {error && <p className="text-[10px] text-rose-600 px-1 font-semibold">{error}</p>}
+          </form>
+        )}
+
+        {/* Horizontal Scrolling Folder Pills */}
+        <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar scroll-smooth">
+          {/* All Posts Pill */}
+          <button
+            onClick={() => navigateToFolder(null)}
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-bold shrink-0 transition-all cursor-pointer ${
+              !currentFolderId
+                ? "bg-[#FF7900] text-white shadow-sm shadow-orange-500/20 border border-[#e06a00]"
+                : "bg-slate-100/90 text-slate-700 hover:bg-orange-50 hover:text-[#FF7900] border border-slate-200/80"
+            }`}
+          >
+            <Layers className="w-3.5 h-3.5" />
+            <span>All Posts</span>
+            <span
+              className={`px-1.5 py-0.2 text-[10px] rounded-md font-extrabold ${
+                !currentFolderId ? "bg-[#e06a00] text-white" : "bg-slate-200 text-slate-700"
+              }`}
+            >
+              {totalPostsCount}
+            </span>
+          </button>
+
+          {/* Uncategorized Pill */}
+          <button
+            onClick={() => navigateToFolder("uncategorized")}
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-bold shrink-0 transition-all cursor-pointer ${
+              currentFolderId === "uncategorized"
+                ? "bg-[#FF7900] text-white shadow-sm shadow-orange-500/20 border border-[#e06a00]"
+                : "bg-slate-100/90 text-slate-700 hover:bg-orange-50 hover:text-[#FF7900] border border-slate-200/80"
+            }`}
+          >
+            <FileQuestion className="w-3.5 h-3.5" />
+            <span>Uncategorized</span>
+            <span
+              className={`px-1.5 py-0.2 text-[10px] rounded-md font-extrabold ${
+                currentFolderId === "uncategorized" ? "bg-[#e06a00] text-white" : "bg-slate-200 text-slate-700"
+              }`}
+            >
+              {uncategorizedCount}
+            </span>
+          </button>
+
+          {/* Custom Folders Pills */}
+          {folders.map((folder) => {
+            const isActive = currentFolderId === folder.id;
+            return (
+              <button
+                key={folder.id}
+                onClick={() => navigateToFolder(folder.id)}
+                className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-bold shrink-0 transition-all cursor-pointer ${
+                  isActive
+                    ? "bg-[#FF7900] text-white shadow-sm shadow-orange-500/20 border border-[#e06a00]"
+                    : "bg-slate-100/90 text-slate-700 hover:bg-orange-50 hover:text-[#FF7900] border border-slate-200/80"
+                }`}
+              >
+                <Folder className="w-3.5 h-3.5" />
+                <span>{folder.name}</span>
+                <span
+                  className={`px-1.5 py-0.2 text-[10px] rounded-md font-extrabold ${
+                    isActive ? "bg-[#e06a00] text-white" : "bg-slate-200 text-slate-700"
+                  }`}
+                >
+                  {folder._count.posts}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Desktop Vertical Sidebar (Visible on desktop md+) */}
+      <div className="hidden md:block space-y-4">
         {/* Sidebar Section Header */}
         <div className="flex items-center justify-between px-2">
           <div className="flex items-center gap-2">

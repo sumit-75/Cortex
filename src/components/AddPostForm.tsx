@@ -108,7 +108,7 @@ export function AddPostForm({ folders = [], defaultFolderId }: AddPostFormProps)
                 }}
                 placeholder="Paste YouTube or Twitter/X post link..."
                 disabled={isPending}
-                className="h-11 pl-4 text-xs font-semibold border-slate-300 hover:border-slate-400 focus:border-[#FF7900]"
+                className="h-11 pl-4 text-sm sm:text-xs font-semibold border-slate-300 hover:border-slate-400 focus:border-[#FF7900]"
               />
             </div>
 
@@ -119,7 +119,7 @@ export function AddPostForm({ folders = [], defaultFolderId }: AddPostFormProps)
                   onValueChange={setSelectedFolderId}
                   disabled={isPending}
                 >
-                  <SelectTrigger className="h-11 border-slate-300 hover:border-slate-400 font-bold text-slate-900">
+                  <SelectTrigger className="h-11 border-slate-300 hover:border-slate-400 font-bold text-slate-900 text-sm sm:text-xs">
                     <SelectValue placeholder="Select folder..." />
                   </SelectTrigger>
                   <SelectContent>
@@ -137,7 +137,7 @@ export function AddPostForm({ folders = [], defaultFolderId }: AddPostFormProps)
             <Button
               type="submit"
               disabled={isPending || !url.trim()}
-              className="h-11 px-6 text-xs font-bold gap-2 shrink-0 shadow-xs hover:shadow-md bg-[#FF7900] hover:bg-[#e06a00] text-white"
+              className="h-11 w-full sm:w-auto px-6 text-sm sm:text-xs font-bold gap-2 shrink-0 shadow-xs hover:shadow-md bg-[#FF7900] hover:bg-[#e06a00] text-white"
             >
               {isPending ? (
                 <>
