@@ -12,19 +12,26 @@ export async function createPost(formData: FormData) {
       return { success: false, error: "You must be logged in to save posts." };
     }
 
-    const url = formData.get("url")?.toString().trim();
-    if (!url) {
+    const rawUrl = formData.get("url")?.toString().trim();
+    if (!rawUrl) {
       return { success: false, error: "Please enter a valid URL." };
     }
+
+    // Normalize URL (strip trailing slashes for duplicate checking)
+    const url = rawUrl.replace(/\/+$/, "");
 
     const folderIdRaw = formData.get("folderId")?.toString().trim();
     const folderId = folderIdRaw && folderIdRaw !== "none" ? folderIdRaw : null;
 
-    // Check if post already exists for this user
+    // Check if post already exists for this user (exact match or normalized match)
     const existingPost = await prisma.post.findFirst({
       where: {
         userId: session.user.id,
-        url: url,
+        OR: [
+          { url: url },
+          { url: rawUrl },
+          { url: `${url}/` },
+        ],
       },
     });
 
@@ -32,7 +39,7 @@ export async function createPost(formData: FormData) {
       return { success: false, error: "You have already saved this link!" };
     }
 
-    // Fetch oEmbed details
+    // Fetch oEmbed details (with built-in fallback)
     const oembed = await fetchOEmbed(url);
 
     // Create post in DB
@@ -51,9 +58,13 @@ export async function createPost(formData: FormData) {
     revalidatePath("/dashboard");
     return { success: true, post };
   } catch (error: any) {
+    let errorMsg = error.message || "An unexpected error occurred while saving the post.";
+    if (errorMsg.includes("fetch failed")) {
+      errorMsg = "Could not reach the post link. Please check your internet connection or the URL.";
+    }
     return {
       success: false,
-      error: error.message || "An unexpected error occurred while saving the post.",
+      error: errorMsg,
     };
   }
 }
