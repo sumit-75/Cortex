@@ -84,11 +84,11 @@ export function AddPostForm({ folders = [], defaultFolderId }: AddPostFormProps)
 
   return (
     <TooltipProvider>
-      <Card className="shadow-sm border-slate-200/80 hover:border-slate-300 transition-all">
+      <Card className="shadow-sm border-slate-200/80 hover:border-slate-300 transition-all bg-white">
         <CardContent className="p-6">
           <div className="flex items-center justify-between mb-3">
             <label htmlFor="url-input" className="text-sm font-bold text-slate-900 flex items-center gap-2 tracking-tight">
-              <Link2 className="w-4 h-4 text-indigo-600" />
+              <Link2 className="w-4 h-4 text-[#FF7900]" />
               Save a new link
             </label>
             {getPlatformBadge(detectedPlatform)}
@@ -136,7 +136,7 @@ export function AddPostForm({ folders = [], defaultFolderId }: AddPostFormProps)
             <Button
               type="submit"
               disabled={isPending || !url.trim()}
-              className="h-11 px-6 text-xs font-bold gap-2 shrink-0 shadow-sm hover:shadow-md"
+              className="h-11 px-6 text-xs font-bold gap-2 shrink-0 shadow-sm hover:shadow-md bg-[#FF7900] hover:bg-[#e06a00]"
             >
               {isPending ? (
                 <>

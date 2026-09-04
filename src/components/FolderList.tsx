@@ -8,11 +8,9 @@ import {
   Layers,
   FileQuestion,
   Folder,
-  FolderPlus,
   Trash2,
   Plus,
   X,
-  ChevronRight,
   FolderOpen,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -89,7 +87,7 @@ export function FolderList({
         {/* Sidebar Section Header */}
         <div className="flex items-center justify-between px-2">
           <div className="flex items-center gap-2">
-            <FolderOpen className="w-4 h-4 text-indigo-600" />
+            <FolderOpen className="w-4 h-4 text-[#FF7900]" />
             <h2 className="text-xs font-bold uppercase tracking-wider text-slate-500">
               Library Folders
             </h2>
@@ -101,7 +99,7 @@ export function FolderList({
                 variant="ghost"
                 size="sm"
                 onClick={() => setShowAddForm(!showAddForm)}
-                className="h-7 px-2 text-xs font-semibold text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50"
+                className="h-7 px-2 text-xs font-semibold text-[#FF7900] hover:text-[#e06a00] hover:bg-orange-50"
               >
                 {showAddForm ? (
                   <X className="w-3.5 h-3.5" />
@@ -136,7 +134,7 @@ export function FolderList({
                 type="submit"
                 size="sm"
                 disabled={isPending || !newFolderName.trim()}
-                className="h-8 shrink-0"
+                className="h-8 shrink-0 bg-[#FF7900] hover:bg-[#e06a00]"
               >
                 {isPending ? "..." : "Save"}
               </Button>
@@ -152,17 +150,17 @@ export function FolderList({
             href="/dashboard"
             className={`group flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-medium transition-all ${
               !currentFolderId
-                ? "bg-indigo-600 text-white font-semibold shadow-sm"
-                : "text-slate-700 hover:bg-slate-100 hover:text-slate-900"
+                ? "bg-[#FF7900] text-white font-bold shadow-sm"
+                : "text-slate-700 hover:bg-orange-50 hover:text-[#FF7900]"
             }`}
           >
             <span className="flex items-center gap-2.5">
-              <Layers className={`w-4 h-4 transition-transform group-hover:scale-110 ${!currentFolderId ? "text-white" : "text-slate-400 group-hover:text-indigo-600"}`} />
+              <Layers className={`w-4 h-4 transition-transform group-hover:scale-110 ${!currentFolderId ? "text-white" : "text-slate-400 group-hover:text-[#FF7900]"}`} />
               <span>All Posts</span>
             </span>
             <Badge
               variant={!currentFolderId ? "default" : "secondary"}
-              className={!currentFolderId ? "bg-indigo-700 text-white" : "bg-slate-100 text-slate-600 group-hover:bg-slate-200"}
+              className={!currentFolderId ? "bg-[#e06a00] text-white" : "bg-slate-100 text-slate-600 group-hover:bg-orange-100 group-hover:text-[#FF7900]"}
             >
               {totalPostsCount}
             </Badge>
@@ -173,17 +171,17 @@ export function FolderList({
             href="/dashboard?folderId=uncategorized"
             className={`group flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-medium transition-all ${
               currentFolderId === "uncategorized"
-                ? "bg-indigo-600 text-white font-semibold shadow-sm"
-                : "text-slate-700 hover:bg-slate-100 hover:text-slate-900"
+                ? "bg-[#FF7900] text-white font-bold shadow-sm"
+                : "text-slate-700 hover:bg-orange-50 hover:text-[#FF7900]"
             }`}
           >
             <span className="flex items-center gap-2.5">
-              <FileQuestion className={`w-4 h-4 transition-transform group-hover:scale-110 ${currentFolderId === "uncategorized" ? "text-white" : "text-slate-400 group-hover:text-indigo-600"}`} />
+              <FileQuestion className={`w-4 h-4 transition-transform group-hover:scale-110 ${currentFolderId === "uncategorized" ? "text-white" : "text-slate-400 group-hover:text-[#FF7900]"}`} />
               <span>Uncategorized</span>
             </span>
             <Badge
               variant={currentFolderId === "uncategorized" ? "default" : "secondary"}
-              className={currentFolderId === "uncategorized" ? "bg-indigo-700 text-white" : "bg-slate-100 text-slate-600 group-hover:bg-slate-200"}
+              className={currentFolderId === "uncategorized" ? "bg-[#e06a00] text-white" : "bg-slate-100 text-slate-600 group-hover:bg-orange-100 group-hover:text-[#FF7900]"}
             >
               {uncategorizedCount}
             </Badge>
@@ -203,18 +201,18 @@ export function FolderList({
                   href={`/dashboard?folderId=${folder.id}`}
                   className={`flex-1 flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-medium transition-all ${
                     isActive
-                      ? "bg-indigo-600 text-white font-semibold shadow-sm"
-                      : "text-slate-700 hover:bg-slate-100 hover:text-slate-900"
+                      ? "bg-[#FF7900] text-white font-bold shadow-sm"
+                      : "text-slate-700 hover:bg-orange-50 hover:text-[#FF7900]"
                   }`}
                 >
                   <span className="flex items-center gap-2.5 truncate max-w-[140px]" title={folder.name}>
-                    <Folder className={`w-4 h-4 shrink-0 transition-transform group-hover:scale-110 ${isActive ? "text-white" : "text-slate-400 group-hover:text-indigo-600"}`} />
+                    <Folder className={`w-4 h-4 shrink-0 transition-transform group-hover:scale-110 ${isActive ? "text-white" : "text-slate-400 group-hover:text-[#FF7900]"}`} />
                     <span className="truncate">{folder.name}</span>
                   </span>
 
                   <Badge
                     variant={isActive ? "default" : "secondary"}
-                    className={isActive ? "bg-indigo-700 text-white" : "bg-slate-100 text-slate-600 group-hover:bg-slate-200"}
+                    className={isActive ? "bg-[#e06a00] text-white" : "bg-slate-100 text-slate-600 group-hover:bg-orange-100 group-hover:text-[#FF7900]"}
                   >
                     {folder._count.posts}
                   </Badge>
@@ -247,7 +245,7 @@ export function FolderList({
                       <TooltipTrigger asChild>
                         <button
                           onClick={() => setDeletingId(folder.id)}
-                          className="p-1 text-slate-400 hover:text-rose-600 opacity-0 group-hover:opacity-100 transition-opacity"
+                          className="p-1 text-slate-400 hover:text-rose-600 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
                         </button>

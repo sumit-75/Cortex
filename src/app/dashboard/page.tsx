@@ -95,11 +95,11 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
       : "All Saved Posts";
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans">
+    <div className="min-h-screen bg-white text-slate-900 flex flex-col font-sans">
       {/* Top Navbar */}
-      <header className="border-b border-slate-200 bg-white/90 backdrop-blur-md px-6 py-3 flex items-center justify-between sticky top-0 z-50 shadow-2xs">
+      <header className="border-b border-slate-200 bg-white px-6 py-3 flex items-center justify-between sticky top-0 z-50 shadow-2xs">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center text-white shadow-md">
+          <div className="w-9 h-9 rounded-xl bg-[#FF7900] flex items-center justify-center text-white shadow-md">
             <Brain className="w-5 h-5" />
           </div>
           <div>
@@ -120,7 +120,7 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
                 className="rounded-full border border-slate-200 shadow-2xs"
               />
             ) : (
-              <div className="w-9 h-9 rounded-full bg-indigo-600 flex items-center justify-center font-bold text-white shadow-2xs">
+              <div className="w-9 h-9 rounded-full bg-[#FF7900] flex items-center justify-center font-bold text-white shadow-2xs">
                 {session.user.name?.[0] || session.user.email?.[0] || "U"}
               </div>
             )}
@@ -156,7 +156,7 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
         </aside>
 
         {/* Right Main Content Area */}
-        <section className="flex-1 p-6 md:p-8 space-y-6 min-w-0 max-w-7xl">
+        <section className="flex-1 p-6 md:p-8 space-y-6 min-w-0 max-w-7xl bg-white">
           <AddPostForm folders={folders} defaultFolderId={folderId} />
 
           <SearchFilter />
@@ -171,7 +171,7 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
               {(search || platform) && (
                 <Link
                   href={folderId ? `/dashboard?folderId=${folderId}` : "/dashboard"}
-                  className="text-xs text-indigo-600 hover:text-indigo-700 font-semibold underline underline-offset-2"
+                  className="text-xs text-[#FF7900] hover:text-[#e06a00] font-semibold underline underline-offset-2"
                 >
                   Clear filters
                 </Link>

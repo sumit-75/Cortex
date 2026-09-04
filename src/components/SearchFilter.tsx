@@ -59,7 +59,7 @@ export function SearchFilter() {
   };
 
   return (
-    <Card className="shadow-sm">
+    <Card className="shadow-sm bg-white border-slate-200/80">
       <CardContent className="p-4">
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
           {/* Search Bar */}
@@ -92,7 +92,9 @@ export function SearchFilter() {
               variant={!currentPlatform || currentPlatform === "all" ? "default" : "ghost"}
               size="sm"
               onClick={() => handlePlatformChange("all")}
-              className="h-8 text-xs px-3 font-semibold"
+              className={`h-8 text-xs px-3 font-semibold ${
+                !currentPlatform || currentPlatform === "all" ? "bg-[#FF7900] hover:bg-[#e06a00] text-white" : ""
+              }`}
             >
               All
             </Button>

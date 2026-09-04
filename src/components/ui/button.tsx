@@ -23,16 +23,16 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const Comp = asChild ? Slot : "button";
 
     const baseStyles =
-      "inline-flex items-center justify-center whitespace-nowrap rounded-xl text-xs font-semibold ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 cursor-pointer active:scale-[0.98]";
+      "inline-flex items-center justify-center whitespace-nowrap rounded-xl text-xs font-bold ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF7900] focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 cursor-pointer active:scale-[0.98]";
 
     const variants = {
-      default: "bg-indigo-600 text-white hover:bg-indigo-700 shadow-sm hover:shadow-md",
+      default: "bg-[#FF7900] text-white hover:bg-[#e06a00] shadow-sm hover:shadow-md",
       destructive: "bg-rose-600 text-white hover:bg-rose-700 shadow-sm",
       outline:
-        "border border-slate-300 bg-white hover:bg-slate-100 hover:text-slate-900 text-slate-700 shadow-2xs",
-      secondary: "bg-slate-100 text-slate-900 hover:bg-slate-200/80",
-      ghost: "hover:bg-slate-100 hover:text-slate-900 text-slate-600",
-      link: "text-indigo-600 underline-offset-4 hover:underline",
+        "border border-slate-300 bg-white hover:bg-slate-50 hover:text-slate-900 text-slate-700 shadow-2xs",
+      secondary: "bg-orange-50 text-[#FF7900] hover:bg-orange-100/80 font-bold",
+      ghost: "hover:bg-orange-50 hover:text-[#FF7900] text-slate-600",
+      link: "text-[#FF7900] underline-offset-4 hover:underline",
     };
 
     const sizes = {
