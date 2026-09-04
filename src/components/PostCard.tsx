@@ -183,7 +183,7 @@ export function PostCard({ post, folders = [] }: PostCardProps) {
         </div>
 
         {/* Embed Media Content */}
-        <div className="p-4 bg-white flex items-center justify-center min-h-[80px]">
+        <div className={`bg-white flex items-center justify-center ${post.platform === "youtube" ? "p-4" : "px-3 pt-3 pb-1"}`}>
           {post.platform === "youtube" ? (
             <div
               className="w-full aspect-video rounded-xl overflow-hidden shadow-2xs bg-black flex items-center justify-center border border-slate-200/60"
@@ -206,7 +206,7 @@ export function PostCard({ post, folders = [] }: PostCardProps) {
             />
           ) : (
             <div
-              className="w-full overflow-x-auto flex justify-center text-slate-900 text-xs py-1 [&_blockquote]:max-w-full [&_iframe]:mx-auto"
+              className="w-full overflow-x-auto flex justify-center text-slate-900 text-xs py-0 [&_blockquote]:max-w-full [&_blockquote]:!mb-0 [&_blockquote]:!my-0 [&_iframe]:mx-auto [&_iframe]:!mb-0 [&_iframe]:!my-0 [&_.twitter-tweet]:!mb-0 [&_.twitter-tweet]:!my-0"
               dangerouslySetInnerHTML={{ __html: cleanEmbedHtml }}
             />
           )}
