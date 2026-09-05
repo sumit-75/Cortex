@@ -7,6 +7,7 @@ import {
   useTransition,
   useEffect,
   ReactNode,
+  Suspense,
 } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
@@ -24,7 +25,7 @@ const NavContext = createContext<NavContextType>({
   navigateToUrl: () => {},
 });
 
-export function NavigationLoadingProvider({ children }: { children: ReactNode }) {
+function NavContextInner({ children }: { children: ReactNode }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const currentFolderId = searchParams.get("folderId");
@@ -83,6 +84,49 @@ export function NavigationLoadingProvider({ children }: { children: ReactNode })
   );
 }
 
+function NavContextFallback({ children }: { children: ReactNode }) {
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
+  const [isNavigating, setIsNavigating] = useState(false);
+
+  const navigateToFolder = (folderId: string | null) => {
+    setIsNavigating(true);
+    const newUrl = folderId ? `/dashboard?folderId=${folderId}` : "/dashboard";
+    startTransition(() => {
+      router.push(newUrl);
+    });
+  };
+
+  const navigateToUrl = (href: string) => {
+    setIsNavigating(true);
+    startTransition(() => {
+      router.push(href);
+    });
+  };
+
+  return (
+    <NavContext.Provider
+      value={{
+        isNavigating: isPending || isNavigating,
+        activeFolderId: undefined,
+        navigateToFolder,
+        navigateToUrl,
+      }}
+    >
+      {children}
+    </NavContext.Provider>
+  );
+}
+
+export function NavigationLoadingProvider({ children }: { children: ReactNode }) {
+  return (
+    <Suspense fallback={<NavContextFallback>{children}</NavContextFallback>}>
+      <NavContextInner>{children}</NavContextInner>
+    </Suspense>
+  );
+}
+
 export function useNavLoading() {
   return useContext(NavContext);
 }
+
