@@ -206,7 +206,7 @@ export function PostCard({ post, folders = [] }: PostCardProps) {
             />
           ) : (
             <div
-              className="w-full overflow-x-auto flex justify-center text-slate-900 text-xs py-0 [&_blockquote]:max-w-full [&_blockquote]:!mb-0 [&_blockquote]:!my-0 [&_iframe]:mx-auto [&_iframe]:!mb-0 [&_iframe]:!my-0 [&_.twitter-tweet]:!mb-0 [&_.twitter-tweet]:!my-0"
+              className="w-full overflow-x-auto no-scrollbar flex justify-center text-slate-900 text-xs py-0 [&_blockquote]:max-w-full [&_blockquote]:!mb-0 [&_blockquote]:!my-0 [&_iframe]:mx-auto [&_iframe]:!mb-0 [&_iframe]:!my-0 [&_.twitter-tweet]:!mb-0 [&_.twitter-tweet]:!my-0"
               dangerouslySetInnerHTML={{ __html: cleanEmbedHtml }}
             />
           )}
