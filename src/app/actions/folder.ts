@@ -73,6 +73,17 @@ export async function deleteFolder(folderId: string) {
       return { success: false, error: "Folder not found or unauthorized." };
     }
 
+    // Delete all posts in this folder
+    await withRetry(() =>
+      prisma.post.deleteMany({
+        where: {
+          folderId: folderId,
+          userId: userId,
+        },
+      })
+    );
+
+    // Delete the folder
     await withRetry(() =>
       prisma.folder.delete({
         where: { id: folderId },
