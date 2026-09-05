@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Cortex ⚡
 
-## Getting Started
+A sleek, modern web application for saving, organizing, and embedding your favorite links and media from **YouTube** and **Twitter / X** into custom folders.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## ⚡ Key Features
+
+- 🔐 **Google OAuth Authentication**: Secure single sign-on powered by Auth.js (NextAuth v5).
+- 🎬 **Rich Media Embeds**: Automatic oEmbed metadata fetching for YouTube videos (HD support) and Twitter / X posts.
+- 📁 **Folder Organization**: Categorize links into custom folders with live post counts and instant folder management.
+- ⚡ **Instant 0ms UI & Skeleton Loading**: Optimistic tab switching and streaming skeleton loaders during navigation.
+- 🔍 **Search & Filter**: Search saved posts by title and filter by platform (All, YouTube, Twitter / X).
+- 🔄 **Serverless DB Resiliency**: Built-in auto-reconnect retry wrapper (`withRetry`) for Neon PostgreSQL serverless database.
+- 📱 **Fully Responsive**: Mobile-first fluid design with horizontal category pill scrolling and high-contrast theme (`#FF7900` Orange & White).
+
+---
+
+## 🛠️ Tech Stack
+
+- **Framework**: Next.js 16 (App Router, Turbopack, Server Actions)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS, Lucide Icons, Shadcn UI
+- **Database**: PostgreSQL (Neon Serverless) via Prisma ORM
+- **Auth**: Auth.js v5 (Google OAuth)
+
+---
+
+## 🚀 Getting Started
+
+### 1. Environment Configuration
+
+Create a `.env` file in the root directory:
+
+```env
+DATABASE_URL="postgresql://user:password@host/dbname?sslmode=require"
+AUTH_SECRET="your-auth-secret"
+AUTH_GOOGLE_ID="your-google-client-id"
+AUTH_GOOGLE_SECRET="your-google-client-secret"
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Installation & Running
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+# Install dependencies
+npm install
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+# Push database schema
+npx prisma db push
 
-## Learn More
+# Run development server
+npm run dev
+```
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Open [http://localhost:3000](http://localhost:3000) to start using Cortex!
