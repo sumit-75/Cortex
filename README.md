@@ -52,4 +52,4 @@ npx prisma db push
 npm run dev
 ```
 
-Open [https://cortex-v1.vercel.app/]((https://cortex-v1.vercel.app/)) to start using Cortex!
+Open [https://cortex-v1.vercel.app/](https://cortex-v1.vercel.app/) to start using Cortex!
